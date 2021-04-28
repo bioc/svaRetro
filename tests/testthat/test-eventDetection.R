@@ -1,5 +1,5 @@
 context('event detection functions')
-colo829 <- readVcf(system.file("extdata", "diploidSV.vcf", package = "RTDetect"))
+colo829 <- readVcf(system.file("extdata", "diploidSV.vcf", package = "NUMTDetect"))
 
 #RT detection
 #vcf <- VariantAnnotation::readVcf(vcf.file, "hg19")
@@ -14,6 +14,5 @@ test_that("RT detection returns two Granges", {
     if (length(rt)>0) {
         expect_equal(rep(2, length(rt)), unname(sapply(rt, length)))
     }
-    
 })
 
