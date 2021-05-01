@@ -42,7 +42,7 @@ suppressPackageStartupMessages(require(StructuralVariantAnnotation))
 suppressPackageStartupMessages(require(VariantAnnotation))
 suppressPackageStartupMessages(require(RTDetect))
 
-RT_vcf <- readVcf(system.file("extdata", "diploidSV.vcf", package = "RTDetect"))
+RT_vcf <- VariantAnnotation::readVcf(system.file("extdata", "diploidSV.vcf", package = "RTDetect"))
 RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
 ```
 

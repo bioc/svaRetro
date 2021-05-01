@@ -1,5 +1,5 @@
 context('event detection functions')
-colo829 <- readVcf(system.file("extdata", "diploidSV.vcf", package = "NUMTDetect"))
+colo829 <- readVcf(system.file("extdata", "diploidSV.vcf", package = "RTDetect"))
 
 #RT detection
 #vcf <- VariantAnnotation::readVcf(vcf.file, "hg19")

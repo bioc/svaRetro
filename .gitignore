@@ -11,3 +11,6 @@ SVA-Bioc.Rproj
 GRIPper
 .*bam*
 bamsurgeon/addsv.tmp/
+RTDetect.Rproj
+.DS_Store
+inst/.DS_Store
