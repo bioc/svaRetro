@@ -128,8 +128,6 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
             sapply(rt.gr$gene_symbol, function(x) gs %in% x))
         rt.grlist <- stats::setNames(lapply(rt.gr.idx, 
                                      function(i) list(rt=rt.gr[i])), l_gene_symbol)
-        # rt.grlist <- lapply(rt.gr.idx, function(i) rt.gr[i])
-        # names(rt.grlist) <- l_gene_symbol
         
         #InsSite GRangesList by gene
         insSite.gr.idx <- lapply(l_gene_symbol, function(gs) 
