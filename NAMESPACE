@@ -3,6 +3,7 @@
 export(rtDetect)
 import(BiocGenerics)
 import(Biostrings)
+import(GenomeInfoDb)
 import(GenomicRanges)
 import(StructuralVariantAnnotation)
 import(VariantAnnotation)

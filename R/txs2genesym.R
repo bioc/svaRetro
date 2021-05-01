@@ -6,7 +6,7 @@
 #' @param unique.genesyms TRUE or FALSE. If TRUE, the converted gene symbols will remove duplicates.
 #' @return A list of names in gene symbols
 .txs2genesym <- function(txs, unique.genesyms=TRUE){
-    assertthat::assert_that(class(txs)=="list", msg = "txs should be a list object")
+    assertthat::assert_that(is(txs, "list"), msg = "txs should be a list object")
     #ucsc id to gene symbol look up table
     gene_symbol <- utils::read.delim(system.file("extdata", "gene_symbol.txt", package = "RTDetect"), 
                                      header=TRUE, comment.char="#")

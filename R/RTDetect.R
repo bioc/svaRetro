@@ -13,6 +13,7 @@
 #' @import rtracklayer
 #' @import Biostrings
 #' @import GenomicRanges
+#' @import GenomeInfoDb
 #' @importFrom dplyr %>%
 #' @importFrom methods as is setMethod setGeneric
 #' @importFrom rlang .data

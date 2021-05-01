@@ -23,13 +23,13 @@
 rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     #message("rtDetect")
     #check args
-    assertthat::assert_that(class(gr)=="GRanges", msg = "gr should be a GRanges object")
+    assertthat::assert_that(is(gr, "GRanges"), msg = "gr should be a GRanges object")
     assertthat::assert_that(length(gr)>0, msg = "gr can't be empty")
-    assertthat::assert_that(class(genes)=="TxDb", msg = "genes should be a TxDb object")
+    assertthat::assert_that(is(genes, "TxDb"), msg = "genes should be a TxDb object")
     
     #prepare annotation exons
     GenomeInfoDb::seqlevelsStyle(genes) <- GenomeInfoDb::seqlevelsStyle(gr)[1]
-    genes <- GenomeInfoDb::keepSeqlevels(genes, seqlevels(genes)[1:24], pruning.mode = "coarse")
+    genes <- GenomeInfoDb::keepSeqlevels(genes, seqlevels(genes)[seq_len(24)], pruning.mode = "coarse")
     exons <- exons(genes, columns=c("exon_id", "tx_id", "tx_name","gene_id"))
     
     #find exon-SV overlaps:
@@ -126,7 +126,7 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
         #RT GRangesList by gene
         rt.gr.idx <- lapply(l_gene_symbol, function(gs) 
             sapply(rt.gr$gene_symbol, function(x) gs %in% x))
-        rt.grlist <- setNames(lapply(rt.gr.idx, 
+        rt.grlist <- stats::setNames(lapply(rt.gr.idx, 
                                      function(i) list(rt=rt.gr[i])), l_gene_symbol)
         # rt.grlist <- lapply(rt.gr.idx, function(i) rt.gr[i])
         # names(rt.grlist) <- l_gene_symbol
@@ -135,7 +135,7 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
         insSite.gr.idx <- lapply(l_gene_symbol, function(gs) 
             sapply(insSite.gr$gene_symbol, function(x) gs %in% x))
             #including partnered insSite bnds which don't have a gene symbol labelling (NA)
-        insSite.grlist <- setNames(lapply(insSite.gr.idx, 
+        insSite.grlist <- stats::setNames(lapply(insSite.gr.idx, 
                                           function(i) list(insSite=c(insSite.gr[i],
                                                                      partner(insSite.gr)[i]))), 
                                    l_gene_symbol)
@@ -143,8 +143,8 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
         # names(insSite.grlist) <- l_gene_symbol
         
         #group inssite and rt as one GRangesList
-        gr.list <- pc(rt.grlist, insSite.grlist)
-        gr.list <- lapply(gr.list, function(x) setNames(x, c('junctions', 'insSite')))
+        gr.list <- S4Vectors::pc(rt.grlist, insSite.grlist)
+        gr.list <- lapply(gr.list, function(x) stats::setNames(x, c('junctions', 'insSite')))
         
         #TODO: add L1/Alu annotation for insertion site filtering.
         
