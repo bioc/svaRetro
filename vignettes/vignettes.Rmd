@@ -41,9 +41,7 @@ consulting the vignettes in the corresponding packages with `browseVignettes("Va
 suppressPackageStartupMessages(require(StructuralVariantAnnotation))
 suppressPackageStartupMessages(require(VariantAnnotation))
 suppressPackageStartupMessages(require(RTDetect))
-```
 
-```{r}
 RT_vcf <- VariantAnnotation::readVcf(system.file("extdata", "diploidSV.vcf", package = "RTDetect"))
 ```
 
