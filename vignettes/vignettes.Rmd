@@ -27,7 +27,7 @@ This vignette outlines a workflow of detecting retrotransposed transcripts (RTs)
 
 ## Using GRanges for structural variants: a breakend-centric data structure
 
-This package uses a breakend-centric event notation adopted from the `StructuralVariantAnnotation` package. In short, breakends are stored in a GRanges object with strand used to indicate breakpoint orientation. where breakpoints are represented using a `partner` field containing the name of the breakend at the other side of the breakend. This notation was chosen as it simplifies the annotations of RTs which are detected at breakend-level.
+This package uses a breakend-centric event notation adopted from the `StructuralVariantAnnotation` package. In short, breakends are stored in a GRanges object with strand used to indicate breakpoint orientation, where breakpoints are represented using a `partner` field containing the name of the breakend at the other side of the breakend. This notation was chosen as it simplifies the annotations of RTs which are detected at breakend-level.
 
 ## Workflow
 ### Loading data from VCF
@@ -41,11 +41,15 @@ consulting the vignettes in the corresponding packages with `browseVignettes("Va
 suppressPackageStartupMessages(require(StructuralVariantAnnotation))
 suppressPackageStartupMessages(require(VariantAnnotation))
 suppressPackageStartupMessages(require(RTDetect))
-
-RT_vcf <- VariantAnnotation::readVcf(system.file("extdata", "diploidSV.vcf", package = "RTDetect"))
-RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
 ```
 
+```{r}
+RT_vcf <- VariantAnnotation::readVcf(system.file("extdata", "diploidSV.vcf", package = "RTDetect"))
+```
+
+```{r}
+RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
+```
 Note that `StructuralVariantAnnotation` requires the `GRanges` object to be composed entirely of valid breakpoints. Please consult the vignette of the `StructuralVariantAnnotation` package for ensuring breakpoint consistency.
 
 ### Identifying Retrotransposed Transcripts
