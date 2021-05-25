@@ -14,7 +14,7 @@
 #' library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 #' genes <- TxDb.Hsapiens.UCSC.hg19.knownGene
 #' vcf.file <- system.file("extdata", "diploidSV.vcf",
-#'                          package = "RTDetect")
+#'                          package = "svaRetro")
 #' vcf <- VariantAnnotation::readVcf(vcf.file, "hg19")
 #' gr <- breakpointRanges(vcf, nominalPosition=TRUE)
 #' rt <- rtDetect(gr, genes, maxgap=30, minscore=0.6)
@@ -24,7 +24,7 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     #message("rtDetect")
     #check args
     assertthat::assert_that(is(gr, "GRanges"), msg = "gr should be a GRanges object")
-    assertthat::assert_that(length(gr)>0, msg = "gr can't be empty")
+    assertthat::assert_that(!isEmpty(gr), msg = "gr can't be empty")
     assertthat::assert_that(is(genes, "TxDb"), msg = "genes should be a TxDb object")
     
     #prepare annotation exons
@@ -39,8 +39,7 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     # 1.return breakpoints overlapping with exons on both ends (>=2 exons)
     hits <- dplyr::inner_join(dplyr::as_tibble(hits.start), dplyr::as_tibble(hits.end), by="queryHits")
     #mcols(exons)[hits$subjectHits.x, "gene_id"] == mcols(exons)[hits$subjectHits.y, "gene_id"]
-    same.tx <- sapply(Reduce(intersect, list(mcols(exons)[hits$subjectHits.x, 'tx_id'], 
-                                             mcols(exons)[hits$subjectHits.y, 'tx_id'])),length)!=0
+    same.tx <- vapply(Reduce(BiocGenerics::intersect, list(mcols(exons)[hits$subjectHits.x, 'tx_id'], mcols(exons)[hits$subjectHits.y, 'tx_id'])), length, numeric(1))!=0
     hits.tx <- hits[same.tx,]
     
     # 2.return breakpoints of insertionSite-exon 
@@ -52,7 +51,7 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     #                       anti_join(dplyr::as_tibble(hits.start), dplyr::as_tibble(hits.end), by='queryHits'),
     #                       anti_join(dplyr::as_tibble(hits.end), dplyr::as_tibble(hits.start), by='queryHits'))
     
-    if (nrow(hits.tx)+nrow(hits.insSite)==0) {
+    if (nrow(hits.tx)==0 & nrow(hits.insSite)==0) {
         message("There is no retroposed gene detected.")
         return(GRanges())
     }else{
@@ -61,25 +60,32 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
         rt.gr<- c(gr[hits.tx$queryHits], partner(gr)[hits.tx$queryHits])
         rt.gr$exon <- c(exons[hits.tx$subjectHits.x]$exon_id, exons[hits.tx$subjectHits.y]$exon_id)
         rt.gr$txs <- c(IRanges::CharacterList(txs), IRanges::CharacterList(txs))
-        rt.gr <- rt.gr[!sapply(rt.gr$txs, rlang::is_empty)]
+        rt.gr <- rt.gr[!vapply(rt.gr$txs, rlang::is_empty, logical(1))]
         
         #message("annotate overlapping exons")
         #combine matching exons and transcripts of the same breakend
         names <- unique(names(rt.gr))
-        rt.txs <- sapply(names, function(x) {Reduce(union, rt.gr[names(rt.gr)==x]$txs)})
-        rt.exons <- sapply(names, function(x) {Reduce(union, rt.gr[names(rt.gr)==x]$exon)})
+        
+        # rt.txs <- sapply(names, function(x) {Reduce(union, rt.gr[names(rt.gr)==x]$txs)})
+        rt.txs <- lapply(names, function(x) {Reduce(union, rt.gr[names(rt.gr)==x]$txs)})
+        names(rt.txs) <- names
         rt.gr$txs <- rt.txs[names(rt.gr)]
+        
+        # rt.exons <- sapply(names, function(x) {Reduce(union, rt.gr[names(rt.gr)==x]$exon)})
+        rt.exons <- lapply(names, function(x) {Reduce(union, rt.gr[names(rt.gr)==x]$exon)})
+        names(rt.exons) <- names
         rt.gr$exons <- rt.exons[names(rt.gr)]
+        
         #remove duplicate breakend records
         rt.gr <- rt.gr[!duplicated(names(rt.gr))]
         #unique() and duplicated() for granges compare RANGES, not names
         # rt.gr <- rt.gr[rt.gr$exons != partner(rt.gr)$exons]
         
-        rt.gr
+        #rt.gr
         
         #RT filter 1: breakpoint should have at least one set of matching exon
         rt.gr <- rt.gr[!mapply(identical, partner(rt.gr)$exons, rt.gr$exons) | 
-                           (mapply(identical, partner(rt.gr)$exons, rt.gr$exons) & sapply(rt.gr$exons, length)>1)]
+                           (mapply(identical, partner(rt.gr)$exons, rt.gr$exons) & vapply(rt.gr$exons, length, numeric(1))>1)] #24MAY here
         
         #RT filter 2:minimal proportion of exon-exon detected for a transcript
         tx.rank <- .scoreByTranscripts(genes, unlist(rt.gr$txs)) 
@@ -104,18 +110,21 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
                               exons[idx$subjectHits]$exon_id)
         insSite.gr$txs <- c(exons[hits[!same.tx,]$subjectHits.x]$tx_name, exons[hits[!same.tx,]$subjectHits.y]$tx_name,
                             exons[idx$subjectHits]$tx_name)
-        insSite.gr <- insSite.gr[!sapply(insSite.gr$txs, rlang::is_empty)]
+        insSite.gr <- insSite.gr[!vapply(insSite.gr$txs, rlang::is_empty, logical(1))]
         #combine matching exons and transcripts of the same breakend
         names <- unique(names(insSite.gr))
-        insSite.txs <- sapply(names, function(x) {Reduce(union, insSite.gr[names(insSite.gr)==x]$txs)})
-        insSite.exons <- sapply(names, function(x) {Reduce(union, insSite.gr[names(insSite.gr)==x]$exons)})
+        insSite.txs <- lapply(names, function(x) {Reduce(union, insSite.gr[names(insSite.gr)==x]$txs)})
+        names(insSite.txs) <- names
+        insSite.exons <- lapply(names, function(x) {Reduce(union, insSite.gr[names(insSite.gr)==x]$exons)})
+        names(insSite.exons) <- names
         insSite.gr$txs <- insSite.txs[names(insSite.gr)]
         insSite.gr$exons <- insSite.exons[names(insSite.gr)]
+        
         insSite.gr <- insSite.gr[!duplicated(names(insSite.gr))]
         insSite.gr <- insSite.gr[!names(insSite.gr) %in% names(rt.gr)]
         insSite.gr <- c(insSite.gr, gr[insSite.gr[!insSite.gr$partner %in% names(insSite.gr)]$partner])
         insSite.gr$rtFound <- mapply(stringr::str_detect, insSite.gr$txs, paste(tx.rank$tx_name, collapse = "|"))
-        insSite.gr$rtFoundSum <- sapply(insSite.gr$rtFound, function(x) {sum(x) > 0})
+        insSite.gr$rtFoundSum <- vapply(insSite.gr$rtFound, function(x) {sum(x) > 0}, logical(1))
         
         # 5.create one GrangesList per gene
         #get all genes detected
@@ -124,14 +133,12 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
         l_gene_symbol <- unique(c(unlist(rt.gr$gene_symbol), unlist(insSite.gr$gene_symbol)))
         
         #RT GRangesList by gene
-        rt.gr.idx <- lapply(l_gene_symbol, function(gs) 
-            sapply(rt.gr$gene_symbol, function(x) gs %in% x))
+        rt.gr.idx <- lapply(l_gene_symbol, function(gs) vapply(rt.gr$gene_symbol, function(x) gs %in% x, logical(1)))
         rt.grlist <- stats::setNames(lapply(rt.gr.idx, 
                                      function(i) list(rt=rt.gr[i])), l_gene_symbol)
         
         #InsSite GRangesList by gene
-        insSite.gr.idx <- lapply(l_gene_symbol, function(gs) 
-            sapply(insSite.gr$gene_symbol, function(x) gs %in% x))
+        insSite.gr.idx <- lapply(l_gene_symbol, function(gs) vapply(insSite.gr$gene_symbol, function(x) gs %in% x, logical(1)))
             #including partnered insSite bnds which don't have a gene symbol labelling (NA)
         insSite.grlist <- stats::setNames(lapply(insSite.gr.idx, 
                                           function(i) list(insSite=c(insSite.gr[i],

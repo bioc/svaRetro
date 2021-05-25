@@ -1,5 +1,5 @@
 ---
-title: "RTDetect Quick Overview"
+title: "svaRetro Quick Overview"
 author: "Ruining Dong"
 date: "`r Sys.Date()`"
 output:
@@ -9,7 +9,7 @@ output:
       collapsed: yes
       smooth_scroll: yes
 vignette: >
-  %\VignetteIndexEntry{RTDetect Package}
+  %\VignetteIndexEntry{svaRetro Package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(#echo = TRUE,
 ```
 
 ## Introduction
-This vignette outlines a workflow of detecting retrotransposed transcripts (RTs) from Variant Call Format (VCF) using the `RTDetect` package. 
+This vignette outlines a workflow of detecting retrotransposed transcripts (RTs) from Variant Call Format (VCF) using the `svaRetro` package. 
 
 
 ## Using GRanges for structural variants: a breakend-centric data structure
@@ -37,12 +37,12 @@ Bioconductor package `VariantAnnotation`. Simple filters could be applied to a
 `VCF` object to remove unwanted calls. The `VCF` object is then converted to a `GRanges` object with breakend-centric notations using `StructuralVariantAnnotation`. More information about `VCF` objects and breakend-centric GRanges object can be found by
 consulting the vignettes in the corresponding packages with `browseVignettes("VariantAnnotation")` and `browseVignettes("StructuralVariantAnnotation")`.
 
-```{r input, warning=FALSE, message=FALSE}
-suppressPackageStartupMessages(require(StructuralVariantAnnotation))
-suppressPackageStartupMessages(require(VariantAnnotation))
-suppressPackageStartupMessages(require(RTDetect))
+```{r input, include=TRUE,results="hide",message=FALSE,warning=FALSE}
+library(StructuralVariantAnnotation)
+library(VariantAnnotation)
+library(svaRetro)
 
-RT_vcf <- VariantAnnotation::readVcf(system.file("extdata", "diploidSV.vcf", package = "RTDetect"))
+RT_vcf <- VariantAnnotation::readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
 ```
 
 ```{r}
@@ -55,9 +55,9 @@ The package provides `rtDetect` to identify RTs using the provided SV calls. Thi
 
 The output is a list of `GRanges` object consisting of two sets of `GRanges` calls, `insSite` and `junctions`, containing candidate insertion sites and exon-exon junctions respectively. Candidate insertion sites are annotated by the source transcripts and whether exon-exon junctions are detected for the source transcripts. RT junction breakends are annotated by the UCSC exon IDs, corresponding transcripts, and NCBI gene symbols.
 
-```{r}
-suppressPackageStartupMessages(require(TxDb.Hsapiens.UCSC.hg19.knownGene))
-suppressPackageStartupMessages(require(dplyr))
+```{r, include=TRUE,results="hide",message=FALSE,warning=FALSE}
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(dplyr)
 hg19.genes <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
 RT <- rtDetect(RT_gr, hg19.genes, maxgap=50, minscore=0.3)
@@ -74,8 +74,8 @@ One way of visualising RT is by circos plots. Here we use the package
 the visualisation of insertion site and exon-exon junctions. 
 
 To generate a simple circos plot of RT event with SKA3 transcript:
-```{r}
-suppressPackageStartupMessages(require(circlize))
+```{r, include=TRUE,results="hide",message=FALSE,warning=FALSE}
+library(circlize)
 rt_chr_prefix <- c(RT$SKA3$junctions, RT$SKA3$insSite)
 seqlevelsStyle(rt_chr_prefix) <- "UCSC"
 pairs <- breakpointgr2pairs(rt_chr_prefix)

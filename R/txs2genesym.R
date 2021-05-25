@@ -4,6 +4,7 @@
 #' and convert the txs to gene symbol.
 #' @param txs A list of transcript ids in UCSC format.
 #' @param unique.genesyms TRUE or FALSE. If TRUE, the converted gene symbols will remove duplicates.
+#' @keywords internal
 #' @return A list of names in gene symbols
 .txs2genesym <- function(txs, unique.genesyms=TRUE){
     assertthat::assert_that(is(txs, "list"), msg = "txs should be a list object")

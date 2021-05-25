@@ -1,12 +1,12 @@
-#' RTDetect: a package for retrotransposed transcript detection
+#' svaRetro: a package for retrotransposed transcript detection
 #'
-#' RTDetect contains functions for detecting retrotransposed transcripts from structural variant calls.
+#' svaRetro contains functions for detecting retrotransposed transcripts from structural variant calls.
 #'
 #' For more details on the features of StructuralVariantAnnotation, read the vignette:
-#' `browseVignettes(package = "RTDetect")`
+#' `browseVignettes(package = "svaRetro")`
 #'
 #' @docType package
-#' @name RTDetect
+#' @name svaRetro
 #' @import BiocGenerics
 #' @import VariantAnnotation
 #' @import StructuralVariantAnnotation

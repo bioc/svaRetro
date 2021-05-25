@@ -20,3 +20,4 @@ Combining matching transcripts
 \details{
 This is an internal function used to merge all overlapping transcripts of a breakpoint into one vector.
 }
+\keyword{internal}

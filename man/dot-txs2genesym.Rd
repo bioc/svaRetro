@@ -21,3 +21,4 @@ Adding gene symbol annotations
 This is an internal function which takes a list of txs in UCSC id format as input 
 and convert the txs to gene symbol.
 }
+\keyword{internal}

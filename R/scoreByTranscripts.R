@@ -4,6 +4,7 @@
 #' The ranking score is the proportion of exon-exon fusions (intronic deletion events) detected for a given transcript.
 #' @param genes TxDb object of genes. hg19 and hg38 are supported in the current version.
 #' @param transcripts.col A vector of transcript names.
+#' @keywords internal
 #' @return A dataframe with two columns, tx_name and score. 
 .scoreByTranscripts <- function(genes, transcripts.col){
     overlapIntron.df <- as.data.frame(table(transcripts.col)/2)

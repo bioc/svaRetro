@@ -21,3 +21,4 @@ Ranking matching transcripts
 This is an internal function which returns overlapping transcript names with ranking scores. 
 The ranking score is the proportion of exon-exon fusions (intronic deletion events) detected for a given transcript.
 }
+\keyword{internal}

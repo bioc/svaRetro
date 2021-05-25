@@ -1,4 +1,4 @@
 library(testthat)
-library(RTDetect)
+library(svaRetro)
 
-test_check("RTDetect")
+test_check("svaRetro")
