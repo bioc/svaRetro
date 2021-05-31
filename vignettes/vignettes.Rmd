@@ -55,6 +55,7 @@ RT_vcf <- readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
 
 ```{r}
 RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
+head(RT_gr)
 ```
 Note that `StructuralVariantAnnotation` requires the `GRanges` object to be composed entirely of valid breakpoints. Please consult the vignette of the `StructuralVariantAnnotation` package for ensuring breakpoint consistency.
 
@@ -66,7 +67,9 @@ The output is a list of `GRanges` object consisting of two sets of `GRanges` cal
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library(dplyr)
 hg19.genes <- TxDb.Hsapiens.UCSC.hg19.knownGene
+```
 
+```{r}
 RT <- rtDetect(RT_gr, hg19.genes, maxgap=50, minscore=0.3)
 ```
 ```{r}
