@@ -11,12 +11,12 @@ Description: svaRetro contains functions for detecting retrotransposed transcrip
 License: GPL-3 + file LICENSE
 Depends:
 	GenomicRanges,
+	rtracklayer,
+	BiocGenerics,
 	StructuralVariantAnnotation,
     R (>= 4.0)
 Imports:
-	rtracklayer,
     VariantAnnotation,
-    BiocGenerics,
     assertthat,
     Biostrings,
     stringr,

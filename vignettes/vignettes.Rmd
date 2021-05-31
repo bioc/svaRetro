@@ -50,7 +50,7 @@ library(StructuralVariantAnnotation)
 library(VariantAnnotation)
 library(svaRetro)
 
-RT_vcf <- VariantAnnotation::readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
+RT_vcf <- readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
 ```
 
 ```{r}
