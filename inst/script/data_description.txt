@@ -1,0 +1,7 @@
+Data description:
+1. diploidSV.vcf is an example output of structural variant calls for a tumor cell line sample COLO829* produced by manta** (https://github.com/Illumina/manta).
+2. gene_symbol.txt is a lookup table downloaded from UCSC genome browser (https://genome.ucsc.edu/cgi-bin/hgTables) by selecting "clade:Mammal, genome:Human, assembly:hg19, group:Genes and Gene Predictions, track: NCBI RefSeq, table:kgXref, output format: selected fields from primary and related tables -> get output -> kgID and geneSymbol -> get output".
+
+
+* Craig, D. W. et al. A somatic reference standard for cancer genome sequencing. Sci. Rep. 6, 24607; doi: 10.1038/srep24607 (2016).
+** Chen, X. et al. Manta: rapid detection of structural variants and indels for germline and cancer sequencing applications. Bioinformatics, 32, 1220-1222; doi:10.1093/bioinformatics/btv710 (2016).

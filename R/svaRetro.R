@@ -14,6 +14,7 @@
 #' @import Biostrings
 #' @import GenomicRanges
 #' @import GenomeInfoDb
+#' @import S4Vectors
 #' @importFrom dplyr %>%
 #' @importFrom methods as is setMethod setGeneric
 #' @importFrom rlang .data

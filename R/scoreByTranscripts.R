@@ -13,6 +13,6 @@
                               mcols(GenomicFeatures::transcripts(genes, columns=c("tx_name","exon_rank"), 
                                                                  filter=list(tx_name=overlapIntron.df[,1]))))
     return(data.frame(tx_name=overlapIntron.df$tx_name, 
-                      score= overlapIntron.df$count / (sapply(overlapIntron.df$exon_rank, length)-1)))
+                      score= overlapIntron.df$count / (vapply(overlapIntron.df$exon_rank, length, numeric(1))-1)))
 }
 
