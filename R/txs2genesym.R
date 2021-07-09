@@ -9,7 +9,7 @@
 .txs2genesym <- function(txs, unique.genesyms=TRUE){
     assertthat::assert_that(is(txs, "list"), msg = "txs should be a list object")
     #ucsc id to gene symbol look up table
-    gene_symbol <- utils::read.delim(system.file("extdata", "gene_symbol.txt", package = "RTDetect"), 
+    gene_symbol <- utils::read.delim(system.file("extdata", "gene_symbol.txt", package = "svaRetro"), 
                                      header=TRUE, comment.char="#")
     gene_symbol <- dplyr::bind_rows(gene_symbol, data.frame(kgID=NA, geneSymbol=NA))
     
