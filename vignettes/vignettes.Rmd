@@ -76,7 +76,6 @@ hg19.genes <- TxDb.Hsapiens.UCSC.hg19.knownGene
 RT_vcf <- readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
 RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
 RT <- rtDetect(RT_gr, hg19.genes, maxgap=50, minscore=0.3)
-rtDetect(hg19.genes, hg19.genes)
 ```
 
 ```{r}
