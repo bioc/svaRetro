@@ -5,7 +5,7 @@ doc
 .RData
 inst/doc
 .Rproj
-savRetro.Rproj
+svaRetro.Rproj
 GRIPper
 .*bam*
 bamsurgeon/addsv.tmp/
