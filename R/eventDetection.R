@@ -29,6 +29,8 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     
     #prepare annotation exons
     GenomeInfoDb::seqlevelsStyle(genes) <- GenomeInfoDb::seqlevelsStyle(gr)[1]
+    
+    ##TODO: this assumes human genome... need to be updated
     genes <- GenomeInfoDb::keepSeqlevels(genes, seqlevels(genes)[seq_len(24)], pruning.mode = "coarse")
     exons <- exons(genes, columns=c("exon_id", "tx_id", "tx_name","gene_id"))
     

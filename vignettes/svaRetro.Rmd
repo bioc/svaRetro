@@ -61,22 +61,17 @@ Note that `StructuralVariantAnnotation` requires the `GRanges` object to be comp
 
 ### Identifying Retrotransposed Transcripts
 The package provides `rtDetect` to identify RTs using the provided SV calls. This is achieved by detecting intronic deletions, which are breakpoints at exon-intron (and intron-exon) boundaries of a transcript. Fusions consisting of an exon boundary and a second genomic location are reported as potential insertion sites. Due to the complexity of RT events, insertion sites can be discovered on both left and right sides, only one side, or none at all.
-The output is a list of `GRanges` object consisting of two sets of `GRanges` calls, `insSite` and `junctions`, containing candidate insertion sites and exon-exon junctions respectively. Candidate insertion sites are annotated by the source transcripts and whether exon-exon junctions are detected for the source transcripts. RT junction breakends are annotated by the UCSC exon IDs, corresponding transcripts, and NCBI gene symbols.
 
 ```{r}
-require(TxDb.Hsapiens.UCSC.hg19.knownGene)
-library(dplyr)
-hg19.genes <- TxDb.Hsapiens.UCSC.hg19.knownGene
-```
-
-```{r}
-require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library(dplyr)
 hg19.genes <- TxDb.Hsapiens.UCSC.hg19.knownGene
 RT_vcf <- readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
 RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
 RT <- rtDetect(RT_gr, hg19.genes, maxgap=50, minscore=0.3)
 ```
+
+The output is a list of `GRanges` object consisting of two sets of `GRanges` calls, `insSite` and `junctions`, containing candidate insertion sites and exon-exon junctions respectively. Candidate insertion sites are annotated by the source transcripts and whether exon-exon junctions are detected for the source transcripts. RT junction breakends are annotated by the UCSC exon IDs, corresponding transcripts, and NCBI gene symbols.
 
 ```{r}
 RT$SKA3
