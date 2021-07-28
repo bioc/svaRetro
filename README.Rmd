@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# svaNUMT: R package for retrotransposed transcript detection from structural variants
+# svaRetro: R package for retrotransposed transcript detection from structural variants
 
 <!-- badges: start -->
 
