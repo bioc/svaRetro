@@ -43,6 +43,29 @@ The development version can be installed from GitHub:
 BiocManager::install("PapenfussLab/svaRetro")
 ```
 
+# How to cite
+
+TBC.
+
+<!-- 
+If you use svaRetro, please cite `svaRetro` [here](https://bioconductor.org/packages/svaRetro).
+```
+@ARTICLE{svaNUMT,
+  title    = "",
+  author   = "",
+  journal  = "",
+  volume   = ,
+  number   = ,
+  pages    = ,
+  month    = ,
+  year     = ,
+  url      = ,
+  doi      = ,
+  pmc      = 
+}
+```
+-->
+
 # Workflow
 
 Below is a workflow example for detecting RTs from a human SV callset.
@@ -60,70 +83,14 @@ RT_vcf <- readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
 RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
 head(RT_gr)
 #> GRanges object with 6 ranges and 12 metadata columns:
-#>                                seqnames    ranges strand | paramRangeID
-#>                                   <Rle> <IRanges>  <Rle> |     <factor>
-#>   MantaINS:0:775:775:0:1:0_bp1        1     66365      + |           NA
-#>      MantaINS:35:0:0:0:0:0_bp1        1   1004204      + |           NA
-#>      MantaDEL:92:0:0:0:0:0_bp1        1   1161716      + |           NA
-#>     MantaDEL:127:0:0:0:0:0_bp1        1   1162672      + |           NA
-#>     MantaDEL:130:0:0:0:0:0_bp1        1   1183434      + |           NA
-#>     MantaDEL:107:0:0:0:1:0_bp1        1   1302326      + |           NA
-#>                                                                                                                                                                                                                                                                                                     REF
-#>                                                                                                                                                                                                                                                                                             <character>
-#>   MantaINS:0:775:775:0:1:0_bp1                                                                                                                                                                                                                                                           AATATAATATATAA
-#>      MantaINS:35:0:0:0:0:0_bp1                                                                                                                                                                                                                                                                        G
-#>      MantaDEL:92:0:0:0:0:0_bp1                                                                                                                                                                                                        CCTGTACGGTCAGGAGGAAACATGGCACCTCCCCTCTGGGGGCTCTTTCCAGAAACCCTCAACCC
-#>     MantaDEL:127:0:0:0:0:0_bp1                                                                                          GGCGGGAAGGCGAGCTCGTGGCCAGGCCCTGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCTGCGGGAAGGCGAGCTCGTGGCCAGGCCCT
-#>     MantaDEL:130:0:0:0:0:0_bp1 CAGGCTGGATCTCCAACTCTGACCTACAGGCAGGAAAGTGGGCAGCCCTGGGAGGCTGGACTGAGGGAGGCTGGACTTCCCACTCAGGCCTACACGCAGGAAAATGGGCAGCCCTGGGAGGCTGGACCGAGGGAGGCTGGGCCTCCCACTCCACCCTACAGGCCAGGACACGGGCAGCCCTGGGAGGCTAGACCGAGGGAGGCTGGGCCTCCCATCTACCCTACAGGCCGGGACACAGGCAGCCCTGGGAGGCTGTACCGAGGG
-#>     MantaDEL:107:0:0:0:1:0_bp1                                                          GAATGAGTGGATTGGTGAGTGAATTGGTGAGTTGAATTGGTGTGTGTAGTGGATGAGTGTGGATGAATGTGAATTGGCGAGTATGGATGTGTGAATTGGTGAGTGTGAATGTGTGGATTGGTGAGTGAATTGGTGAGTTGAATTGGTGTGTGTAGTGTGGATGAGTGTGAATTGGCGAGTGTGGATGAGTGTGAATTGGTGAGTGTG
-#>                                                                                                                                                                            ALT
-#>                                                                                                                                                                    <character>
-#>   MantaINS:0:775:775:0:1:0_bp1 ATATATATATTATTATATAATATATATTATATAATATATTTTATTATATAATATAATATATATTATATAATATAATATATTTTATTATATAAATATATATTATATTATATAATATAATATATATTAATATAAATATATATTAT
-#>      MantaINS:35:0:0:0:0:0_bp1                                                                 GGCCACGCGGGCTGTGCAGATGCAGGTGCGGCGGGGCGGGGCCACGCGGGCTGTGAAGGTGCAGGTGCGGCGGGGCAGA
-#>      MantaDEL:92:0:0:0:0:0_bp1                                                                                                                                              CT
-#>     MantaDEL:127:0:0:0:0:0_bp1                                                                                                                                               G
-#>     MantaDEL:130:0:0:0:0:0_bp1                                                                                                                                               C
-#>     MantaDEL:107:0:0:0:1:0_bp1                                                                                                                                      GCAGTGTGAA
-#>                                     QUAL      FILTER                 sourceId
-#>                                <numeric> <character>              <character>
-#>   MantaINS:0:775:775:0:1:0_bp1       999    MaxDepth MantaINS:0:775:775:0:1:0
-#>      MantaINS:35:0:0:0:0:0_bp1       999        PASS    MantaINS:35:0:0:0:0:0
-#>      MantaDEL:92:0:0:0:0:0_bp1       999        PASS    MantaDEL:92:0:0:0:0:0
-#>     MantaDEL:127:0:0:0:0:0_bp1       440        PASS   MantaDEL:127:0:0:0:0:0
-#>     MantaDEL:130:0:0:0:0:0_bp1       643        PASS   MantaDEL:130:0:0:0:0:0
-#>     MantaDEL:107:0:0:0:1:0_bp1       999        PASS   MantaDEL:107:0:0:0:1:0
-#>                                                     partner      svtype
-#>                                                 <character> <character>
-#>   MantaINS:0:775:775:0:1:0_bp1 MantaINS:0:775:775:0:1:0_bp2         INS
-#>      MantaINS:35:0:0:0:0:0_bp1    MantaINS:35:0:0:0:0:0_bp2         INS
-#>      MantaDEL:92:0:0:0:0:0_bp1    MantaDEL:92:0:0:0:0:0_bp2         DEL
-#>     MantaDEL:127:0:0:0:0:0_bp1   MantaDEL:127:0:0:0:0:0_bp2         DEL
-#>     MantaDEL:130:0:0:0:0:0_bp1   MantaDEL:130:0:0:0:0:0_bp2         DEL
-#>     MantaDEL:107:0:0:0:1:0_bp1   MantaDEL:107:0:0:0:1:0_bp2         DEL
-#>                                    svLen
-#>                                <numeric>
-#>   MantaINS:0:775:775:0:1:0_bp1       129
-#>      MantaINS:35:0:0:0:0:0_bp1        78
-#>      MantaDEL:92:0:0:0:0:0_bp1       -63
-#>     MantaDEL:127:0:0:0:0:0_bp1      -174
-#>     MantaDEL:130:0:0:0:0:0_bp1      -263
-#>     MantaDEL:107:0:0:0:1:0_bp1      -197
-#>                                                                                                                                                                        insSeq
-#>                                                                                                                                                                   <character>
-#>   MantaINS:0:775:775:0:1:0_bp1 TATATATATTATTATATAATATATATTATATAATATATTTTATTATATAATATAATATATATTATATAATATAATATATTTTATTATATAAATATATATTATATTATATAATATAATATATATTAATATAAATATATATTAT
-#>      MantaINS:35:0:0:0:0:0_bp1                                                                 GCCACGCGGGCTGTGCAGATGCAGGTGCGGCGGGGCGGGGCCACGCGGGCTGTGAAGGTGCAGGTGCGGCGGGGCAGA
-#>      MantaDEL:92:0:0:0:0:0_bp1                                                                                                                                              T
-#>     MantaDEL:127:0:0:0:0:0_bp1                                                                                                                                               
-#>     MantaDEL:130:0:0:0:0:0_bp1                                                                                                                                               
-#>     MantaDEL:107:0:0:0:1:0_bp1                                                                                                                                      CAGTGTGAA
-#>                                   insLen    HOMLEN
-#>                                <numeric> <numeric>
-#>   MantaINS:0:775:775:0:1:0_bp1       142         0
-#>      MantaINS:35:0:0:0:0:0_bp1        78        10
-#>      MantaDEL:92:0:0:0:0:0_bp1         1         0
-#>     MantaDEL:127:0:0:0:0:0_bp1         0         9
-#>     MantaDEL:130:0:0:0:0:0_bp1         0         7
-#>     MantaDEL:107:0:0:0:1:0_bp1         9         0
+#>                                seqnames    ranges strand | paramRangeID                                                                                                                                                                                                                                                                      REF                                                                                                                                             ALT      QUAL      FILTER                 sourceId                      partner      svtype     svLen                                                                                                                                         insSeq    insLen    HOMLEN
+#>                                   <Rle> <IRanges>  <Rle> |     <factor>                                                                                                                                                                                                                                                              <character>                                                                                                                                     <character> <numeric> <character>              <character>                  <character> <character> <numeric>                                                                                                                                    <character> <numeric> <numeric>
+#>   MantaINS:0:775:775:0:1:0_bp1        1     66365      + |           NA                                                                                                                                                                                                                                                           AATATAATATATAA ATATATATATTATTATATAATATATATTATATAATATATTTTATTATATAATATAATATATATTATATAATATAATATATTTTATTATATAAATATATATTATATTATATAATATAATATATATTAATATAAATATATATTAT       999    MaxDepth MantaINS:0:775:775:0:1:0 MantaINS:0:775:775:0:1:0_bp2         INS       129 TATATATATTATTATATAATATATATTATATAATATATTTTATTATATAATATAATATATATTATATAATATAATATATTTTATTATATAAATATATATTATATTATATAATATAATATATATTAATATAAATATATATTAT       142         0
+#>      MantaINS:35:0:0:0:0:0_bp1        1   1004204      + |           NA                                                                                                                                                                                                                                                                        G                                                                 GGCCACGCGGGCTGTGCAGATGCAGGTGCGGCGGGGCGGGGCCACGCGGGCTGTGAAGGTGCAGGTGCGGCGGGGCAGA       999        PASS    MantaINS:35:0:0:0:0:0    MantaINS:35:0:0:0:0:0_bp2         INS        78                                                                 GCCACGCGGGCTGTGCAGATGCAGGTGCGGCGGGGCGGGGCCACGCGGGCTGTGAAGGTGCAGGTGCGGCGGGGCAGA        78        10
+#>      MantaDEL:92:0:0:0:0:0_bp1        1   1161716      + |           NA                                                                                                                                                                                                        CCTGTACGGTCAGGAGGAAACATGGCACCTCCCCTCTGGGGGCTCTTTCCAGAAACCCTCAACCC                                                                                                                                              CT       999        PASS    MantaDEL:92:0:0:0:0:0    MantaDEL:92:0:0:0:0:0_bp2         DEL       -63                                                                                                                                              T         1         0
+#>     MantaDEL:127:0:0:0:0:0_bp1        1   1162672      + |           NA                                                                                          GGCGGGAAGGCGAGCTCGTGGCCAGGCCCTGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCTGCGGGAAGGCGAGCTCGTGGCCAGGCCCT                                                                                                                                               G       440        PASS   MantaDEL:127:0:0:0:0:0   MantaDEL:127:0:0:0:0:0_bp2         DEL      -174                                                                                                                                                        0         9
+#>     MantaDEL:130:0:0:0:0:0_bp1        1   1183434      + |           NA CAGGCTGGATCTCCAACTCTGACCTACAGGCAGGAAAGTGGGCAGCCCTGGGAGGCTGGACTGAGGGAGGCTGGACTTCCCACTCAGGCCTACACGCAGGAAAATGGGCAGCCCTGGGAGGCTGGACCGAGGGAGGCTGGGCCTCCCACTCCACCCTACAGGCCAGGACACGGGCAGCCCTGGGAGGCTAGACCGAGGGAGGCTGGGCCTCCCATCTACCCTACAGGCCGGGACACAGGCAGCCCTGGGAGGCTGTACCGAGGG                                                                                                                                               C       643        PASS   MantaDEL:130:0:0:0:0:0   MantaDEL:130:0:0:0:0:0_bp2         DEL      -263                                                                                                                                                        0         7
+#>     MantaDEL:107:0:0:0:1:0_bp1        1   1302326      + |           NA                                                          GAATGAGTGGATTGGTGAGTGAATTGGTGAGTTGAATTGGTGTGTGTAGTGGATGAGTGTGGATGAATGTGAATTGGCGAGTATGGATGTGTGAATTGGTGAGTGTGAATGTGTGGATTGGTGAGTGAATTGGTGAGTTGAATTGGTGTGTGTAGTGTGGATGAGTGTGAATTGGCGAGTGTGGATGAGTGTGAATTGGTGAGTGTG                                                                                                                                      GCAGTGTGAA       999        PASS   MantaDEL:107:0:0:0:1:0   MantaDEL:107:0:0:0:1:0_bp2         DEL      -197                                                                                                                                      CAGTGTGAA         9         0
 #>   -------
 #>   seqinfo: 25 sequences from an unspecified genome
 ```
@@ -207,157 +174,30 @@ and NCBI gene symbols.
 RT$SKA3
 #> $junctions
 #> GRanges object with 14 ranges and 16 metadata columns:
-#>                                  seqnames    ranges strand | paramRangeID
-#>                                     <Rle> <IRanges>  <Rle> |     <factor>
-#>    MantaDEL:245251:6:6:0:0:0_bp2       13  21729832      - |           NA
-#>    MantaDEL:245251:5:8:0:0:0_bp2       13  21732061      - |           NA
-#>    MantaDEL:245251:5:9:0:0:0_bp2       13  21734038      - |           NA
-#>   MantaDEL:245251:7:10:0:0:0_bp2       13  21735929      - |           NA
-#>   MantaDEL:245251:4:11:0:0:0_bp2       13  21742127      - |           NA
-#>                              ...      ...       ...    ... .          ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1       13  21732261      + |           NA
-#>   MantaDEL:245251:7:10:0:0:0_bp1       13  21734126      + |           NA
-#>   MantaDEL:245251:4:11:0:0:0_bp1       13  21736014      + |           NA
-#>    MantaDEL:245251:3:4:0:0:0_bp1       13  21742538      + |           NA
-#>    MantaDEL:245251:2:3:0:0:0_bp1       13  21746642      + |           NA
-#>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              REF
-#>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      <character>
-#>    MantaDEL:245251:6:6:0:0:0_bp2 TCTGCAACAGATACAAATAACAAATATCAATTTAATAAAATTAAAAGCCATTAAGACAAATGACACAATACTGTGGCTATATATTTTACACTTATAAAATAATTGAGGATAGATTCCCACTGATATCATTAAACTGGATAATTCGGGAATCTGAGATTCAGGGATCACAAGTTCTATATCAAAAGATAGAGACAGGCTATTAACTTAAGCTGGCAAATGTCAATTAAAAACAAAATTTTTACCAATATTCAAATGTTAATTTTTTTTTTTTTTTTTTAGATGGAGTCTCGCTCTGTTGCCAGGCTGGAGTGCAGTGGCATGATCTTGGCTCACTGCAACCTCCGCCTCCCAGATTCAAGCGATTCTCCTGCCTCAGCCTCCTGAGTAGCTGGGACTACAGGTGTGCACCACCACACCTGGCTAATTTTTGTATTTTTAGTAGAGACGAGGTTTCACCATGTTGGTCAGGATGGTCAAATGTTAATTTTTAAATGTCCTCCTCAAATAACACATGAACTTTCTTTACAAAGGTAACATACTCAC
-#>    MantaDEL:245251:5:8:0:0:0_bp2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               G
-#>    MantaDEL:245251:5:9:0:0:0_bp2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A
-#>   MantaDEL:245251:7:10:0:0:0_bp2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T
-#>   MantaDEL:245251:4:11:0:0:0_bp2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A
-#>                              ...                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A
-#>   MantaDEL:245251:7:10:0:0:0_bp1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T
-#>   MantaDEL:245251:4:11:0:0:0_bp1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A
-#>    MantaDEL:245251:3:4:0:0:0_bp1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A
-#>    MantaDEL:245251:2:3:0:0:0_bp1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T
-#>                                          ALT      QUAL      FILTER
-#>                                  <character> <numeric> <character>
-#>    MantaDEL:245251:6:6:0:0:0_bp2           T       999        PASS
-#>    MantaDEL:245251:5:8:0:0:0_bp2       <DEL>       999        PASS
-#>    MantaDEL:245251:5:9:0:0:0_bp2       <DEL>       525        PASS
-#>   MantaDEL:245251:7:10:0:0:0_bp2       <DEL>       539        PASS
-#>   MantaDEL:245251:4:11:0:0:0_bp2       <DEL>       999        PASS
-#>                              ...         ...       ...         ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1       <DEL>       525        PASS
-#>   MantaDEL:245251:7:10:0:0:0_bp1       <DEL>       539        PASS
-#>   MantaDEL:245251:4:11:0:0:0_bp1       <DEL>       999        PASS
-#>    MantaDEL:245251:3:4:0:0:0_bp1       <DEL>       999        PASS
-#>    MantaDEL:245251:2:3:0:0:0_bp1       <DEL>       999        PASS
-#>                                                    sourceId
-#>                                                 <character>
-#>    MantaDEL:245251:6:6:0:0:0_bp2  MantaDEL:245251:6:6:0:0:0
-#>    MantaDEL:245251:5:8:0:0:0_bp2  MantaDEL:245251:5:8:0:0:0
-#>    MantaDEL:245251:5:9:0:0:0_bp2  MantaDEL:245251:5:9:0:0:0
-#>   MantaDEL:245251:7:10:0:0:0_bp2 MantaDEL:245251:7:10:0:0:0
-#>   MantaDEL:245251:4:11:0:0:0_bp2 MantaDEL:245251:4:11:0:0:0
-#>                              ...                        ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1  MantaDEL:245251:5:9:0:0:0
-#>   MantaDEL:245251:7:10:0:0:0_bp1 MantaDEL:245251:7:10:0:0:0
-#>   MantaDEL:245251:4:11:0:0:0_bp1 MantaDEL:245251:4:11:0:0:0
-#>    MantaDEL:245251:3:4:0:0:0_bp1  MantaDEL:245251:3:4:0:0:0
-#>    MantaDEL:245251:2:3:0:0:0_bp1  MantaDEL:245251:2:3:0:0:0
-#>                                                         partner      svtype
-#>                                                     <character> <character>
-#>    MantaDEL:245251:6:6:0:0:0_bp2  MantaDEL:245251:6:6:0:0:0_bp1         DEL
-#>    MantaDEL:245251:5:8:0:0:0_bp2  MantaDEL:245251:5:8:0:0:0_bp1         DEL
-#>    MantaDEL:245251:5:9:0:0:0_bp2  MantaDEL:245251:5:9:0:0:0_bp1         DEL
-#>   MantaDEL:245251:7:10:0:0:0_bp2 MantaDEL:245251:7:10:0:0:0_bp1         DEL
-#>   MantaDEL:245251:4:11:0:0:0_bp2 MantaDEL:245251:4:11:0:0:0_bp1         DEL
-#>                              ...                            ...         ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1  MantaDEL:245251:5:9:0:0:0_bp2         DEL
-#>   MantaDEL:245251:7:10:0:0:0_bp1 MantaDEL:245251:7:10:0:0:0_bp2         DEL
-#>   MantaDEL:245251:4:11:0:0:0_bp1 MantaDEL:245251:4:11:0:0:0_bp2         DEL
-#>    MantaDEL:245251:3:4:0:0:0_bp1  MantaDEL:245251:3:4:0:0:0_bp2         DEL
-#>    MantaDEL:245251:2:3:0:0:0_bp1  MantaDEL:245251:2:3:0:0:0_bp2         DEL
-#>                                      svLen      insSeq    insLen    HOMLEN
-#>                                  <numeric> <character> <numeric> <numeric>
-#>    MantaDEL:245251:6:6:0:0:0_bp2      -542                     0         1
-#>    MantaDEL:245251:5:8:0:0:0_bp2     -2110        <NA>         0         2
-#>    MantaDEL:245251:5:9:0:0:0_bp2     -1776        <NA>         0         4
-#>   MantaDEL:245251:7:10:0:0:0_bp2     -1802        <NA>         0         1
-#>   MantaDEL:245251:4:11:0:0:0_bp2     -6112        <NA>         0         2
-#>                              ...       ...         ...       ...       ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1     -1776        <NA>         0         4
-#>   MantaDEL:245251:7:10:0:0:0_bp1     -1802        <NA>         0         1
-#>   MantaDEL:245251:4:11:0:0:0_bp1     -6112        <NA>         0         2
-#>    MantaDEL:245251:3:4:0:0:0_bp1     -3939        <NA>         0         2
-#>    MantaDEL:245251:2:3:0:0:0_bp1     -3870        <NA>         0         2
-#>                                       exon                              txs
-#>                                  <integer>                           <list>
-#>    MantaDEL:245251:6:6:0:0:0_bp2    176912            uc001unt.3,uc001unv.3
-#>    MantaDEL:245251:5:8:0:0:0_bp2    176913            uc001unt.3,uc001unv.3
-#>    MantaDEL:245251:5:9:0:0:0_bp2    176914 uc001unt.3,uc001unu.3,uc001unv.3
-#>   MantaDEL:245251:7:10:0:0:0_bp2    176915 uc001unt.3,uc001unu.3,uc001unv.3
-#>   MantaDEL:245251:4:11:0:0:0_bp2    176916 uc001unt.3,uc001unu.3,uc001unv.3
-#>                              ...       ...                              ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1    176913 uc001unt.3,uc001unu.3,uc001unv.3
-#>   MantaDEL:245251:7:10:0:0:0_bp1    176914 uc001unt.3,uc001unu.3,uc001unv.3
-#>   MantaDEL:245251:4:11:0:0:0_bp1    176915 uc001unt.3,uc001unu.3,uc001unv.3
-#>    MantaDEL:245251:3:4:0:0:0_bp1    176916 uc001unt.3,uc001unu.3,uc001unv.3
-#>    MantaDEL:245251:2:3:0:0:0_bp1    176917 uc001unt.3,uc001unu.3,uc001unv.3
-#>                                   exons gene_symbol
-#>                                  <list>      <list>
-#>    MantaDEL:245251:6:6:0:0:0_bp2 176912        SKA3
-#>    MantaDEL:245251:5:8:0:0:0_bp2 176913        SKA3
-#>    MantaDEL:245251:5:9:0:0:0_bp2 176914        SKA3
-#>   MantaDEL:245251:7:10:0:0:0_bp2 176915        SKA3
-#>   MantaDEL:245251:4:11:0:0:0_bp2 176916        SKA3
-#>                              ...    ...         ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1 176913        SKA3
-#>   MantaDEL:245251:7:10:0:0:0_bp1 176914        SKA3
-#>   MantaDEL:245251:4:11:0:0:0_bp1 176915        SKA3
-#>    MantaDEL:245251:3:4:0:0:0_bp1 176916        SKA3
-#>    MantaDEL:245251:2:3:0:0:0_bp1 176917        SKA3
+#>                                  seqnames    ranges strand | paramRangeID                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             REF         ALT      QUAL      FILTER                   sourceId                        partner      svtype     svLen      insSeq    insLen    HOMLEN      exon                              txs  exons gene_symbol
+#>                                     <Rle> <IRanges>  <Rle> |     <factor>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <character> <character> <numeric> <character>                <character>                    <character> <character> <numeric> <character> <numeric> <numeric> <integer>                           <list> <list>      <list>
+#>    MantaDEL:245251:6:6:0:0:0_bp2       13  21729832      - |           NA TCTGCAACAGATACAAATAACAAATATCAATTTAATAAAATTAAAAGCCATTAAGACAAATGACACAATACTGTGGCTATATATTTTACACTTATAAAATAATTGAGGATAGATTCCCACTGATATCATTAAACTGGATAATTCGGGAATCTGAGATTCAGGGATCACAAGTTCTATATCAAAAGATAGAGACAGGCTATTAACTTAAGCTGGCAAATGTCAATTAAAAACAAAATTTTTACCAATATTCAAATGTTAATTTTTTTTTTTTTTTTTTAGATGGAGTCTCGCTCTGTTGCCAGGCTGGAGTGCAGTGGCATGATCTTGGCTCACTGCAACCTCCGCCTCCCAGATTCAAGCGATTCTCCTGCCTCAGCCTCCTGAGTAGCTGGGACTACAGGTGTGCACCACCACACCTGGCTAATTTTTGTATTTTTAGTAGAGACGAGGTTTCACCATGTTGGTCAGGATGGTCAAATGTTAATTTTTAAATGTCCTCCTCAAATAACACATGAACTTTCTTTACAAAGGTAACATACTCAC           T       999        PASS  MantaDEL:245251:6:6:0:0:0  MantaDEL:245251:6:6:0:0:0_bp1         DEL      -542                     0         1    176912            uc001unt.3,uc001unv.3 176912        SKA3
+#>    MantaDEL:245251:5:8:0:0:0_bp2       13  21732061      - |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               G       <DEL>       999        PASS  MantaDEL:245251:5:8:0:0:0  MantaDEL:245251:5:8:0:0:0_bp1         DEL     -2110        <NA>         0         2    176913            uc001unt.3,uc001unv.3 176913        SKA3
+#>    MantaDEL:245251:5:9:0:0:0_bp2       13  21734038      - |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       525        PASS  MantaDEL:245251:5:9:0:0:0  MantaDEL:245251:5:9:0:0:0_bp1         DEL     -1776        <NA>         0         4    176914 uc001unt.3,uc001unu.3,uc001unv.3 176914        SKA3
+#>   MantaDEL:245251:7:10:0:0:0_bp2       13  21735929      - |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T       <DEL>       539        PASS MantaDEL:245251:7:10:0:0:0 MantaDEL:245251:7:10:0:0:0_bp1         DEL     -1802        <NA>         0         1    176915 uc001unt.3,uc001unu.3,uc001unv.3 176915        SKA3
+#>   MantaDEL:245251:4:11:0:0:0_bp2       13  21742127      - |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       999        PASS MantaDEL:245251:4:11:0:0:0 MantaDEL:245251:4:11:0:0:0_bp1         DEL     -6112        <NA>         0         2    176916 uc001unt.3,uc001unu.3,uc001unv.3 176916        SKA3
+#>                              ...      ...       ...    ... .          ...                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ...         ...       ...         ...                        ...                            ...         ...       ...         ...       ...       ...       ...                              ...    ...         ...
+#>    MantaDEL:245251:5:9:0:0:0_bp1       13  21732261      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       525        PASS  MantaDEL:245251:5:9:0:0:0  MantaDEL:245251:5:9:0:0:0_bp2         DEL     -1776        <NA>         0         4    176913 uc001unt.3,uc001unu.3,uc001unv.3 176913        SKA3
+#>   MantaDEL:245251:7:10:0:0:0_bp1       13  21734126      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T       <DEL>       539        PASS MantaDEL:245251:7:10:0:0:0 MantaDEL:245251:7:10:0:0:0_bp2         DEL     -1802        <NA>         0         1    176914 uc001unt.3,uc001unu.3,uc001unv.3 176914        SKA3
+#>   MantaDEL:245251:4:11:0:0:0_bp1       13  21736014      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       999        PASS MantaDEL:245251:4:11:0:0:0 MantaDEL:245251:4:11:0:0:0_bp2         DEL     -6112        <NA>         0         2    176915 uc001unt.3,uc001unu.3,uc001unv.3 176915        SKA3
+#>    MantaDEL:245251:3:4:0:0:0_bp1       13  21742538      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       999        PASS  MantaDEL:245251:3:4:0:0:0  MantaDEL:245251:3:4:0:0:0_bp2         DEL     -3939        <NA>         0         2    176916 uc001unt.3,uc001unu.3,uc001unv.3 176916        SKA3
+#>    MantaDEL:245251:2:3:0:0:0_bp1       13  21746642      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T       <DEL>       999        PASS  MantaDEL:245251:2:3:0:0:0  MantaDEL:245251:2:3:0:0:0_bp2         DEL     -3870        <NA>         0         2    176917 uc001unt.3,uc001unu.3,uc001unv.3 176917        SKA3
 #>   -------
 #>   seqinfo: 25 sequences from an unspecified genome
 #> 
 #> $insSite
 #> GRanges object with 4 ranges and 17 metadata columns:
-#>                                 seqnames    ranges strand | paramRangeID
-#>                                    <Rle> <IRanges>  <Rle> |     <factor>
-#>     MantaBND:245251:0:3:0:0:0:0       13  21746762      + |           NA
-#>   MantaDEL:245251:5:6:0:0:0_bp2       13  21731995      - |           NA
-#>     MantaBND:245251:0:3:0:0:0:1       11 108585702      - |           NA
-#>   MantaDEL:245251:5:6:0:0:0_bp1       13  21729260      + |           NA
-#>                                         REF             ALT      QUAL
-#>                                 <character>     <character> <numeric>
-#>     MantaBND:245251:0:3:0:0:0:0           T T[11:108585702[        49
-#>   MantaDEL:245251:5:6:0:0:0_bp2           T           <DEL>       283
-#>     MantaBND:245251:0:3:0:0:0:1           T  ]13:21746762]T        49
-#>   MantaDEL:245251:5:6:0:0:0_bp1           T           <DEL>       283
-#>                                      FILTER                    sourceId
-#>                                 <character>                 <character>
-#>     MantaBND:245251:0:3:0:0:0:0        PASS MantaBND:245251:0:3:0:0:0:0
-#>   MantaDEL:245251:5:6:0:0:0_bp2        PASS   MantaDEL:245251:5:6:0:0:0
-#>     MantaBND:245251:0:3:0:0:0:1        PASS MantaBND:245251:0:3:0:0:0:1
-#>   MantaDEL:245251:5:6:0:0:0_bp1        PASS   MantaDEL:245251:5:6:0:0:0
-#>                                                       partner      svtype
-#>                                                   <character> <character>
-#>     MantaBND:245251:0:3:0:0:0:0   MantaBND:245251:0:3:0:0:0:1         BND
-#>   MantaDEL:245251:5:6:0:0:0_bp2 MantaDEL:245251:5:6:0:0:0_bp1         DEL
-#>     MantaBND:245251:0:3:0:0:0:1   MantaBND:245251:0:3:0:0:0:0         BND
-#>   MantaDEL:245251:5:6:0:0:0_bp1 MantaDEL:245251:5:6:0:0:0_bp2         DEL
-#>                                     svLen      insSeq    insLen    HOMLEN
-#>                                 <numeric> <character> <numeric> <numeric>
-#>     MantaBND:245251:0:3:0:0:0:0        NA                     0         0
-#>   MantaDEL:245251:5:6:0:0:0_bp2     -2734        <NA>         0         0
-#>     MantaBND:245251:0:3:0:0:0:1        NA                     0         0
-#>   MantaDEL:245251:5:6:0:0:0_bp1     -2734        <NA>         0         0
-#>                                  exons                              txs
-#>                                 <list>                           <list>
-#>     MantaBND:245251:0:3:0:0:0:0 176918            uc001unt.3,uc001unu.3
-#>   MantaDEL:245251:5:6:0:0:0_bp2 176911 uc001unt.3,uc001unu.3,uc001unv.3
-#>     MantaBND:245251:0:3:0:0:0:1     NA                               NA
-#>   MantaDEL:245251:5:6:0:0:0_bp1     NA                               NA
-#>                                        rtFound rtFoundSum gene_symbol
-#>                                         <list>  <logical>      <list>
-#>     MantaBND:245251:0:3:0:0:0:0      TRUE,TRUE       TRUE        SKA3
-#>   MantaDEL:245251:5:6:0:0:0_bp2 TRUE,TRUE,TRUE       TRUE        SKA3
-#>     MantaBND:245251:0:3:0:0:0:1             NA       <NA>          NA
-#>   MantaDEL:245251:5:6:0:0:0_bp1             NA       <NA>          NA
+#>                                 seqnames    ranges strand | paramRangeID         REF             ALT      QUAL      FILTER                    sourceId                       partner      svtype     svLen      insSeq    insLen    HOMLEN  exons                              txs        rtFound rtFoundSum gene_symbol
+#>                                    <Rle> <IRanges>  <Rle> |     <factor> <character>     <character> <numeric> <character>                 <character>                   <character> <character> <numeric> <character> <numeric> <numeric> <list>                           <list>         <list>  <logical>      <list>
+#>     MantaBND:245251:0:3:0:0:0:0       13  21746762      + |           NA           T T[11:108585702[        49        PASS MantaBND:245251:0:3:0:0:0:0   MantaBND:245251:0:3:0:0:0:1         BND        NA                     0         0 176918            uc001unt.3,uc001unu.3      TRUE,TRUE       TRUE        SKA3
+#>   MantaDEL:245251:5:6:0:0:0_bp2       13  21731995      - |           NA           T           <DEL>       283        PASS   MantaDEL:245251:5:6:0:0:0 MantaDEL:245251:5:6:0:0:0_bp1         DEL     -2734        <NA>         0         0 176911 uc001unt.3,uc001unu.3,uc001unv.3 TRUE,TRUE,TRUE       TRUE        SKA3
+#>     MantaBND:245251:0:3:0:0:0:1       11 108585702      - |           NA           T  ]13:21746762]T        49        PASS MantaBND:245251:0:3:0:0:0:1   MantaBND:245251:0:3:0:0:0:0         BND        NA                     0         0     NA                               NA             NA       <NA>          NA
+#>   MantaDEL:245251:5:6:0:0:0_bp1       13  21729260      + |           NA           T           <DEL>       283        PASS   MantaDEL:245251:5:6:0:0:0 MantaDEL:245251:5:6:0:0:0_bp2         DEL     -2734        <NA>         0         0     NA                               NA             NA       <NA>          NA
 #>   -------
 #>   seqinfo: 25 sequences from an unspecified genome
 ```
