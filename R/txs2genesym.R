@@ -7,7 +7,7 @@
 #' @keywords internal
 #' @return A list of names in gene symbols
 .txs2genesym <- function(txs, unique.genesyms=TRUE){
-    assertthat::assert_that(is(txs, "list"), msg = "txs should be a list object")
+    assertthat::assert_that(is(txs, "list") | is(txs, "vector"), msg = "txs should be a list or vector")
     #ucsc id to gene symbol look up table
     gene_symbol <- utils::read.delim(system.file("extdata", "gene_symbol.txt", package = "svaRetro"), 
                                      header=TRUE, comment.char="#")
@@ -20,3 +20,5 @@
     }
     return(gene_syms)
 }
+
+#21/AUG: change assertthat of txs type from list only to list or vector to fix an encountered bug.

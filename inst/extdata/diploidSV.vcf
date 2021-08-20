@@ -26,7 +26,7 @@
 ##contig=<ID=22,length=51304566>
 ##contig=<ID=X,length=155270560>
 ##contig=<ID=Y,length=59373566>
-##contig=<ID=MT,length=16569>
+##contig=<ID=MT,length=16571>
 ##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description="Imprecise structural variation">
 ##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
 ##INFO=<ID=SVLEN,Number=.,Type=Integer,Description="Difference in length between REF and ALT alleles">

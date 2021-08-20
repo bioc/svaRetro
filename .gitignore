@@ -14,3 +14,4 @@ RTDetect.Rproj
 inst/.DS_Store
 flake.lock
 flake.nix
+.travis.yml

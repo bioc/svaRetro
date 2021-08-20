@@ -31,7 +31,9 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     GenomeInfoDb::seqlevelsStyle(genes) <- GenomeInfoDb::seqlevelsStyle(gr)[1]
     
     ##TODO: this assumes human genome... need to be updated
-    genes <- GenomeInfoDb::keepSeqlevels(genes, seqlevels(genes)[seq_len(24)], pruning.mode = "coarse")
+    #The UCSC chrM length is 16571 and the test VCF is 16569, thus removed
+    #but ultimately it's on the user to make sure the TxDb and VCF share the same reference version
+    #genes <- GenomeInfoDb::keepSeqlevels(genes, seqlevels(genes)[seq_len(24)], pruning.mode = "coarse")
     exons <- exons(genes, columns=c("exon_id", "tx_id", "tx_name","gene_id"))
     
     #find exon-SV overlaps:
@@ -132,29 +134,32 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
         #get all genes detected
         rt.gr$gene_symbol <- .txs2genesym(rt.gr$txs)
         insSite.gr$gene_symbol <- .txs2genesym(insSite.gr$txs)
-        l_gene_symbol <- unique(c(unlist(rt.gr$gene_symbol), unlist(insSite.gr$gene_symbol)))
-        
+        #the unlisted gene_symbols are factors which will be converted to factor indices (numbers)
+        #if not converted to characters prior to unique()
+        l_gene_symbol <- unique(c(as.character(unlist(rt.gr$gene_symbol)), 
+                                  as.character(unlist(insSite.gr$gene_symbol))))
+    
         #RT GRangesList by gene
         rt.gr.idx <- lapply(l_gene_symbol, function(gs) vapply(rt.gr$gene_symbol, function(x) gs %in% x, logical(1)))
-        rt.grlist <- stats::setNames(lapply(rt.gr.idx, 
+        rt.grlist <- stats::setNames(lapply(rt.gr.idx,
                                      function(i) list(rt=rt.gr[i])), l_gene_symbol)
-        
+
         #InsSite GRangesList by gene
         insSite.gr.idx <- lapply(l_gene_symbol, function(gs) vapply(insSite.gr$gene_symbol, function(x) gs %in% x, logical(1)))
             #including partnered insSite bnds which don't have a gene symbol labelling (NA)
-        insSite.grlist <- stats::setNames(lapply(insSite.gr.idx, 
+        insSite.grlist <- stats::setNames(lapply(insSite.gr.idx,
                                           function(i) list(insSite=c(insSite.gr[i],
-                                                                     partner(insSite.gr)[i]))), 
+                                                                     partner(insSite.gr)[i]))),
                                    l_gene_symbol)
         # insSite.grlist <- lapply(insSite.gr.idx, function(i) insSite.gr[i])
         # names(insSite.grlist) <- l_gene_symbol
-        
+
         #group inssite and rt as one GRangesList
         gr.list <- S4Vectors::pc(rt.grlist, insSite.grlist)
         gr.list <- lapply(gr.list, function(x) stats::setNames(x, c('junctions', 'insSite')))
-        
+
         #TODO: add L1/Alu annotation for insertion site filtering.
-        
+
         #NOTE: GrangesList require all GRanges share the same mcols!
         #return(GRangesList(insSite = insSite.gr, rt = rt.gr))
         #return(GRangesList(insSite=GRangesList(insSite.grlist), rt=GRangesList(rt.grlist)))
