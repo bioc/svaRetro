@@ -1,10 +1,12 @@
 #' Combining matching transcripts 
 #' @details
-#' This is an internal function used to merge all overlapping transcripts of a breakpoint into one vector.
+#' This is an internal function used to merge all overlapping transcripts of a 
+#' breakpoint into one vector.
 #' @param gr A GRanges object
 #' @param names A vector of granges names.
 #' @keywords internal
-#' @return A list of vectors. Each vector is named with the name of the corresponding granges.
+#' @return A list of vectors. Each vector is named with the name of the 
+#' corresponding granges.
 .combineMatchingTranscripts <- function(gr, names){
     names <- unique(names)
     txs.list <- vector(mode="list", length=length(names))
