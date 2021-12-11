@@ -61,12 +61,14 @@ filterByRT_is_gr <- function(insSite.gr, rt.gr, gr, tx.rank){
     insSite.gr <- insSite.gr[!duplicated(names(insSite.gr))]
     insSite.gr <- insSite.gr[!names(insSite.gr) %in% names(rt.gr)]
     #add the missing partner bp to insSite.gr
-    l <- !insSite.gr$partner %in% names(insSite.gr)
-    insSite.gr <- c(insSite.gr, gr[insSite.gr[l]$partner])
-    insSite.gr$rtFound <- mapply(stringr::str_detect, 
-                                 insSite.gr$txs, 
-                                 paste(tx.rank$tx_name, collapse = "|"))
-    insSite.gr$rtFoundSum <- vapply(insSite.gr$rtFound, 
-                                    function(x) {sum(x) > 0}, logical(1))
+    if(!isEmpty(insSite.gr)){
+      l <- !insSite.gr$partner %in% names(insSite.gr)
+      insSite.gr <- c(insSite.gr, gr[insSite.gr[l]$partner])
+      insSite.gr$rtFound <- mapply(stringr::str_detect, 
+                                   insSite.gr$txs, 
+                                   paste(tx.rank$tx_name, collapse = "|"), SIMPLIFY = F)
+      insSite.gr$rtFoundSum <- vapply(insSite.gr$rtFound, 
+                                      function(x) {sum(x) > 0}, logical(1))
+    }
     return(insSite.gr)
 }
