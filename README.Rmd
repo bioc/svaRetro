@@ -33,16 +33,13 @@ corresponding packages with `browseVignettes("VariantAnnotation")` and
 
 # Installation
 
-`svaRetro` is currently under review on Bioconductor. 
-
-<!-- after acceptance 
-[svaNUMT](https://bioconductor.org/packages/svaRetro) is currently available for download in the 'Devel' version of Bioconductor:
+[svaNUMT](https://doi.org/doi:10.18129/B9.bioc.svaRetro) is currently available for download in Bioconductor:
 
 ```{r, eval=FALSE}
 # install.packages("BiocManager")
 BiocManager::install("svaRetro")
 ```
--->
+
 The development version can be installed from GitHub:
 
 ```{r, eval=FALSE}
@@ -51,26 +48,22 @@ BiocManager::install("PapenfussLab/svaRetro")
 
 # How to cite
 
-TBC.
-
-<!-- 
 If you use svaRetro, please cite `svaRetro` [here](https://bioconductor.org/packages/svaRetro).
 ```
-@ARTICLE{svaNUMT,
-  title    = "",
-  author   = "",
-  journal  = "",
-  volume   = ,
-  number   = ,
-  pages    = ,
-  month    = ,
-  year     = ,
-  url      = ,
-  doi      = ,
-  pmc      = 
+@article {Dong2021.08.18.456578,
+	author = {Dong, Ruining and Cameron, Daniel and Bedo, Justin and Papenfuss, Anthony T},
+	title = {svaRetro and svaNUMT: Modular packages for annotation of retrotransposed transcripts and nuclear integration of mitochondrial DNA in genome sequencing data},
+	elocation-id = {2021.08.18.456578},
+	year = {2021},
+	doi = {10.1101/2021.08.18.456578},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {Background The biological significance of structural variation is now more widely recognized. However, due to the lack of available tools for downstream analysis, including processing and annotating, interpretation of structural variant calls remains a challenge.Findings Here we present svaRetro and svaNUMT, R packages that provide functions for annotating novel genomic events such as non-reference retro-copied transcripts and nuclear integration of mitochondrial DNA. We evaluate the performance of these packages to detect events using simulations and public benchmarking datasets, and annotate processed transcripts in a public structural variant database.Conclusions svaRetro and svaNUMT provide efficient, modular tools for downstream identification and annotation of structural variant calls.Competing Interest StatementThe authors have declared no competing interest.SVstructural variantNUMTnuclear mitochondrial integrationRTretroposed transcriptTSDtarget site duplicationmtDNAmitochondrial DNA},
+	URL = {https://www.biorxiv.org/content/early/2021/08/19/2021.08.18.456578},
+	eprint = {https://www.biorxiv.org/content/early/2021/08/19/2021.08.18.456578.full.pdf},
+	journal = {bioRxiv}
 }
 ```
--->
+
 
 # Workflow
 Below is a workflow example for detecting RTs from a human SV callset.

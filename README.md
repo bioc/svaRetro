@@ -25,17 +25,13 @@ corresponding packages with `browseVignettes("VariantAnnotation")` and
 
 # Installation
 
-`svaRetro` is currently under review on Bioconductor.
+[svaNUMT](https://doi.org/doi:10.18129/B9.bioc.svaRetro) is currently
+available for download in Bioconductor:
 
-<!-- after acceptance 
-[svaNUMT](https://bioconductor.org/packages/svaRetro) is currently available for download in the 'Devel' version of Bioconductor:
-
-
-```r
+``` r
 # install.packages("BiocManager")
 BiocManager::install("svaRetro")
 ```
--->
 
 The development version can be installed from GitHub:
 
@@ -45,26 +41,21 @@ BiocManager::install("PapenfussLab/svaRetro")
 
 # How to cite
 
-TBC.
+If you use svaRetro, please cite `svaRetro`
+[here](https://bioconductor.org/packages/svaRetro).
 
-<!-- 
-If you use svaRetro, please cite `svaRetro` [here](https://bioconductor.org/packages/svaRetro).
-```
-@ARTICLE{svaNUMT,
-  title    = "",
-  author   = "",
-  journal  = "",
-  volume   = ,
-  number   = ,
-  pages    = ,
-  month    = ,
-  year     = ,
-  url      = ,
-  doi      = ,
-  pmc      = 
-}
-```
--->
+    @article {Dong2021.08.18.456578,
+        author = {Dong, Ruining and Cameron, Daniel and Bedo, Justin and Papenfuss, Anthony T},
+        title = {svaRetro and svaNUMT: Modular packages for annotation of retrotransposed transcripts and nuclear integration of mitochondrial DNA in genome sequencing data},
+        elocation-id = {2021.08.18.456578},
+        year = {2021},
+        doi = {10.1101/2021.08.18.456578},
+        publisher = {Cold Spring Harbor Laboratory},
+        abstract = {Background The biological significance of structural variation is now more widely recognized. However, due to the lack of available tools for downstream analysis, including processing and annotating, interpretation of structural variant calls remains a challenge.Findings Here we present svaRetro and svaNUMT, R packages that provide functions for annotating novel genomic events such as non-reference retro-copied transcripts and nuclear integration of mitochondrial DNA. We evaluate the performance of these packages to detect events using simulations and public benchmarking datasets, and annotate processed transcripts in a public structural variant database.Conclusions svaRetro and svaNUMT provide efficient, modular tools for downstream identification and annotation of structural variant calls.Competing Interest StatementThe authors have declared no competing interest.SVstructural variantNUMTnuclear mitochondrial integrationRTretroposed transcriptTSDtarget site duplicationmtDNAmitochondrial DNA},
+        URL = {https://www.biorxiv.org/content/early/2021/08/19/2021.08.18.456578},
+        eprint = {https://www.biorxiv.org/content/early/2021/08/19/2021.08.18.456578.full.pdf},
+        journal = {bioRxiv}
+    }
 
 # Workflow
 
@@ -82,15 +73,15 @@ RT_vcf <- readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
 ``` r
 RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
 head(RT_gr)
-#> GRanges object with 6 ranges and 12 metadata columns:
-#>                                seqnames    ranges strand | paramRangeID                                                                                                                                                                                                                                                                      REF                                                                                                                                             ALT      QUAL      FILTER                 sourceId                      partner      svtype     svLen                                                                                                                                         insSeq    insLen    HOMLEN
-#>                                   <Rle> <IRanges>  <Rle> |     <factor>                                                                                                                                                                                                                                                              <character>                                                                                                                                     <character> <numeric> <character>              <character>                  <character> <character> <numeric>                                                                                                                                    <character> <numeric> <numeric>
-#>   MantaINS:0:775:775:0:1:0_bp1        1     66365      + |           NA                                                                                                                                                                                                                                                           AATATAATATATAA ATATATATATTATTATATAATATATATTATATAATATATTTTATTATATAATATAATATATATTATATAATATAATATATTTTATTATATAAATATATATTATATTATATAATATAATATATATTAATATAAATATATATTAT       999    MaxDepth MantaINS:0:775:775:0:1:0 MantaINS:0:775:775:0:1:0_bp2         INS       129 TATATATATTATTATATAATATATATTATATAATATATTTTATTATATAATATAATATATATTATATAATATAATATATTTTATTATATAAATATATATTATATTATATAATATAATATATATTAATATAAATATATATTAT       142         0
-#>      MantaINS:35:0:0:0:0:0_bp1        1   1004204      + |           NA                                                                                                                                                                                                                                                                        G                                                                 GGCCACGCGGGCTGTGCAGATGCAGGTGCGGCGGGGCGGGGCCACGCGGGCTGTGAAGGTGCAGGTGCGGCGGGGCAGA       999        PASS    MantaINS:35:0:0:0:0:0    MantaINS:35:0:0:0:0:0_bp2         INS        78                                                                 GCCACGCGGGCTGTGCAGATGCAGGTGCGGCGGGGCGGGGCCACGCGGGCTGTGAAGGTGCAGGTGCGGCGGGGCAGA        78        10
-#>      MantaDEL:92:0:0:0:0:0_bp1        1   1161716      + |           NA                                                                                                                                                                                                        CCTGTACGGTCAGGAGGAAACATGGCACCTCCCCTCTGGGGGCTCTTTCCAGAAACCCTCAACCC                                                                                                                                              CT       999        PASS    MantaDEL:92:0:0:0:0:0    MantaDEL:92:0:0:0:0:0_bp2         DEL       -63                                                                                                                                              T         1         0
-#>     MantaDEL:127:0:0:0:0:0_bp1        1   1162672      + |           NA                                                                                          GGCGGGAAGGCGAGCTCGTGGCCAGGCCCTGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCGGCGGGAAGGCGAGCTCGTGGCCAGGCCCTGCGGGAAGGCGAGCTCGTGGCCAGGCCCT                                                                                                                                               G       440        PASS   MantaDEL:127:0:0:0:0:0   MantaDEL:127:0:0:0:0:0_bp2         DEL      -174                                                                                                                                                        0         9
-#>     MantaDEL:130:0:0:0:0:0_bp1        1   1183434      + |           NA CAGGCTGGATCTCCAACTCTGACCTACAGGCAGGAAAGTGGGCAGCCCTGGGAGGCTGGACTGAGGGAGGCTGGACTTCCCACTCAGGCCTACACGCAGGAAAATGGGCAGCCCTGGGAGGCTGGACCGAGGGAGGCTGGGCCTCCCACTCCACCCTACAGGCCAGGACACGGGCAGCCCTGGGAGGCTAGACCGAGGGAGGCTGGGCCTCCCATCTACCCTACAGGCCGGGACACAGGCAGCCCTGGGAGGCTGTACCGAGGG                                                                                                                                               C       643        PASS   MantaDEL:130:0:0:0:0:0   MantaDEL:130:0:0:0:0:0_bp2         DEL      -263                                                                                                                                                        0         7
-#>     MantaDEL:107:0:0:0:1:0_bp1        1   1302326      + |           NA                                                          GAATGAGTGGATTGGTGAGTGAATTGGTGAGTTGAATTGGTGTGTGTAGTGGATGAGTGTGGATGAATGTGAATTGGCGAGTATGGATGTGTGAATTGGTGAGTGTGAATGTGTGGATTGGTGAGTGAATTGGTGAGTTGAATTGGTGTGTGTAGTGTGGATGAGTGTGAATTGGCGAGTGTGGATGAGTGTGAATTGGTGAGTGTG                                                                                                                                      GCAGTGTGAA       999        PASS   MantaDEL:107:0:0:0:1:0   MantaDEL:107:0:0:0:1:0_bp2         DEL      -197                                                                                                                                      CAGTGTGAA         9         0
+#> GRanges object with 6 ranges and 13 metadata columns:
+#>                                seqnames    ranges strand | paramRangeID                    REF                    ALT      QUAL      FILTER               sourceId                partner      svtype     svLen                 insSeq    insLen       event    HOMLEN
+#>                                   <Rle> <IRanges>  <Rle> |     <factor>            <character>            <character> <numeric> <character>            <character>            <character> <character> <numeric>            <character> <numeric> <character> <numeric>
+#>   MantaINS:0:775:775:0:1:0_bp1        1     66365      + |           NA         AATATAATATATAA ATATATATATTATTATATAA..       999    MaxDepth MantaINS:0:775:775:0.. MantaINS:0:775:775:0..         INS       129 TATATATATTATTATATAAT..       142        <NA>         0
+#>      MantaINS:35:0:0:0:0:0_bp1        1   1004204      + |           NA                      G GGCCACGCGGGCTGTGCAGA..       999        PASS  MantaINS:35:0:0:0:0:0 MantaINS:35:0:0:0:0:..         INS        78 GCCACGCGGGCTGTGCAGAT..        78        <NA>        10
+#>      MantaDEL:92:0:0:0:0:0_bp1        1   1161716      + |           NA CCTGTACGGTCAGGAGGAAA..                     CT       999        PASS  MantaDEL:92:0:0:0:0:0 MantaDEL:92:0:0:0:0:..         DEL       -63                      T         1        <NA>         0
+#>     MantaDEL:127:0:0:0:0:0_bp1        1   1162672      + |           NA GGCGGGAAGGCGAGCTCGTG..                      G       440        PASS MantaDEL:127:0:0:0:0:0 MantaDEL:127:0:0:0:0..         DEL      -174                                0        <NA>         9
+#>     MantaDEL:130:0:0:0:0:0_bp1        1   1183434      + |           NA CAGGCTGGATCTCCAACTCT..                      C       643        PASS MantaDEL:130:0:0:0:0:0 MantaDEL:130:0:0:0:0..         DEL      -263                                0        <NA>         7
+#>     MantaDEL:107:0:0:0:1:0_bp1        1   1302326      + |           NA GAATGAGTGGATTGGTGAGT..             GCAGTGTGAA       999        PASS MantaDEL:107:0:0:0:1:0 MantaDEL:107:0:0:0:1..         DEL      -197              CAGTGTGAA         9        <NA>         0
 #>   -------
 #>   seqinfo: 25 sequences from an unspecified genome
 ```
@@ -129,12 +120,12 @@ library(dplyr)
 #> The following object is masked from 'package:XVector':
 #> 
 #>     slice
-#> The following object is masked from 'package:matrixStats':
-#> 
-#>     count
 #> The following object is masked from 'package:Biobase':
 #> 
 #>     combine
+#> The following object is masked from 'package:matrixStats':
+#> 
+#>     count
 #> The following objects are masked from 'package:GenomicRanges':
 #> 
 #>     intersect, setdiff, union
@@ -160,6 +151,18 @@ hg19.genes <- TxDb.Hsapiens.UCSC.hg19.knownGene
 RT_vcf <- readVcf(system.file("extdata", "diploidSV.vcf", package = "svaRetro"))
 RT_gr <- StructuralVariantAnnotation::breakpointRanges(RT_vcf, nominalPosition=TRUE)
 RT <- rtDetect(RT_gr, hg19.genes, maxgap=50, minscore=0.3)
+#> Warning in (function (seqlevels, genome, new_style) : cannot switch some of hg19's seqlevels from UCSC to NCBI style
+#> Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+#>   - in 'x': MT
+#>   - in 'y': chrM, HSCHR1_RANDOM_CTG5, HSCHR1_RANDOM_CTG12, HSCHR4_1_CTG9, HSCHR4_RANDOM_CTG2, HSCHR4_RANDOM_CTG3, HSCHR6_MHC_APD_CTG1, HSCHR6_MHC_COX_CTG1, HSCHR6_MHC_DBB_CTG1, HSCHR6_MHC_MANN_CTG1, HSCHR6_MHC_MCF_CTG1, HSCHR6_MHC_QBL_CTG1, HSCHR6_MHC_SSTO_CTG1, HSCHR7_RANDOM_CTG1, HSCHR8_RANDOM_CTG1, HSCHR8_RANDOM_CTG4, HSCHR9_RANDOM_CTG1, HSCHR9_RANDOM_CTG2, HSCHR9_RANDOM_CTG4, HSCHR9_RANDOM_CTG5, HSCHR11_RANDOM_CTG2, HSCHR17_1_CTG5, HSCHR17_RANDOM_CTG1, HSCHR17_RANDOM_CTG2, HSCHR17_RANDOM_CTG3, HSCHR17_RANDOM_CTG4, HSCHR18_RANDOM_CTG1, HSCHR19_RANDOM_CTG1, HSCHR19_RANDOM_CTG2, HSCHR21_RANDOM_CTG9, HSCHRUN_RANDOM_CTG1, HSCHRUN_RANDOM_CTG2, HSCHRUN_RANDOM_CTG3, HSCHRUN_RANDOM_CTG4, HSCHRUN_RANDOM_CTG5, HSCHRUN_RANDOM_CTG6, HSCHRUN_RANDOM_CTG7, HSCHRUN_RANDOM_CTG9, HSCHRUN_RANDOM_CTG10, HSCHRUN_RANDOM_CTG11, HSCHRUN_RANDOM_CTG13, HSCHRUN_RANDOM_CTG14, HSCHRUN_RANDOM_CTG15, HSCHRUN_RANDOM_CTG16, HSCHRUN_RANDOM_CTG17, HSCHRUN_RANDOM_CTG19, HSCHRUN_RANDOM_CTG20, HSCHRUN_RANDOM_CTG21, HSCHRUN_RANDOM_CTG22, HSCHRUN_RANDOM_CTG23, HSCHRUN_RANDOM_CTG24, HSCHRUN_RANDOM_CTG25, HSCHRUN_RANDOM_CTG26, HSCHRUN_RANDOM_CTG27, HSCHRUN_RANDOM_CTG28, HSCHRUN_RANDOM_CTG29, HSCHRUN_RANDOM_CTG30, HSCHRUN_RANDOM_CTG31, HSCHRUN_RANDOM_CTG32, HSCHRUN_RANDOM_CTG33, HSCHRUN_RANDOM_CTG34, HSCHRUN_RANDOM_CTG35, HSCHRUN_RANDOM_CTG36, HSCHRUN_RANDOM_CTG37, HSCHRUN_RANDOM_CTG38, HSCHRUN_RANDOM_CTG39, HSCHRUN_RANDOM_CTG40, HSCHRUN_RANDOM_CTG41, HSCHRUN_RANDOM_CTG42
+#>   Make sure to always combine/compare objects based on the same reference
+#>   genome (use suppressWarnings() to suppress this warning).
+
+#> Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+#>   - in 'x': MT
+#>   - in 'y': chrM, HSCHR1_RANDOM_CTG5, HSCHR1_RANDOM_CTG12, HSCHR4_1_CTG9, HSCHR4_RANDOM_CTG2, HSCHR4_RANDOM_CTG3, HSCHR6_MHC_APD_CTG1, HSCHR6_MHC_COX_CTG1, HSCHR6_MHC_DBB_CTG1, HSCHR6_MHC_MANN_CTG1, HSCHR6_MHC_MCF_CTG1, HSCHR6_MHC_QBL_CTG1, HSCHR6_MHC_SSTO_CTG1, HSCHR7_RANDOM_CTG1, HSCHR8_RANDOM_CTG1, HSCHR8_RANDOM_CTG4, HSCHR9_RANDOM_CTG1, HSCHR9_RANDOM_CTG2, HSCHR9_RANDOM_CTG4, HSCHR9_RANDOM_CTG5, HSCHR11_RANDOM_CTG2, HSCHR17_1_CTG5, HSCHR17_RANDOM_CTG1, HSCHR17_RANDOM_CTG2, HSCHR17_RANDOM_CTG3, HSCHR17_RANDOM_CTG4, HSCHR18_RANDOM_CTG1, HSCHR19_RANDOM_CTG1, HSCHR19_RANDOM_CTG2, HSCHR21_RANDOM_CTG9, HSCHRUN_RANDOM_CTG1, HSCHRUN_RANDOM_CTG2, HSCHRUN_RANDOM_CTG3, HSCHRUN_RANDOM_CTG4, HSCHRUN_RANDOM_CTG5, HSCHRUN_RANDOM_CTG6, HSCHRUN_RANDOM_CTG7, HSCHRUN_RANDOM_CTG9, HSCHRUN_RANDOM_CTG10, HSCHRUN_RANDOM_CTG11, HSCHRUN_RANDOM_CTG13, HSCHRUN_RANDOM_CTG14, HSCHRUN_RANDOM_CTG15, HSCHRUN_RANDOM_CTG16, HSCHRUN_RANDOM_CTG17, HSCHRUN_RANDOM_CTG19, HSCHRUN_RANDOM_CTG20, HSCHRUN_RANDOM_CTG21, HSCHRUN_RANDOM_CTG22, HSCHRUN_RANDOM_CTG23, HSCHRUN_RANDOM_CTG24, HSCHRUN_RANDOM_CTG25, HSCHRUN_RANDOM_CTG26, HSCHRUN_RANDOM_CTG27, HSCHRUN_RANDOM_CTG28, HSCHRUN_RANDOM_CTG29, HSCHRUN_RANDOM_CTG30, HSCHRUN_RANDOM_CTG31, HSCHRUN_RANDOM_CTG32, HSCHRUN_RANDOM_CTG33, HSCHRUN_RANDOM_CTG34, HSCHRUN_RANDOM_CTG35, HSCHRUN_RANDOM_CTG36, HSCHRUN_RANDOM_CTG37, HSCHRUN_RANDOM_CTG38, HSCHRUN_RANDOM_CTG39, HSCHRUN_RANDOM_CTG40, HSCHRUN_RANDOM_CTG41, HSCHRUN_RANDOM_CTG42
+#>   Make sure to always combine/compare objects based on the same reference
+#>   genome (use suppressWarnings() to suppress this warning).
 ```
 
 The output is a list of `GRanges` object consisting of two sets of
@@ -173,31 +176,31 @@ and NCBI gene symbols.
 ``` r
 RT$SKA3
 #> $junctions
-#> GRanges object with 14 ranges and 16 metadata columns:
-#>                                  seqnames    ranges strand | paramRangeID                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             REF         ALT      QUAL      FILTER                   sourceId                        partner      svtype     svLen      insSeq    insLen    HOMLEN      exon                              txs  exons gene_symbol
-#>                                     <Rle> <IRanges>  <Rle> |     <factor>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <character> <character> <numeric> <character>                <character>                    <character> <character> <numeric> <character> <numeric> <numeric> <integer>                           <list> <list>      <list>
-#>    MantaDEL:245251:6:6:0:0:0_bp2       13  21729832      - |           NA TCTGCAACAGATACAAATAACAAATATCAATTTAATAAAATTAAAAGCCATTAAGACAAATGACACAATACTGTGGCTATATATTTTACACTTATAAAATAATTGAGGATAGATTCCCACTGATATCATTAAACTGGATAATTCGGGAATCTGAGATTCAGGGATCACAAGTTCTATATCAAAAGATAGAGACAGGCTATTAACTTAAGCTGGCAAATGTCAATTAAAAACAAAATTTTTACCAATATTCAAATGTTAATTTTTTTTTTTTTTTTTTAGATGGAGTCTCGCTCTGTTGCCAGGCTGGAGTGCAGTGGCATGATCTTGGCTCACTGCAACCTCCGCCTCCCAGATTCAAGCGATTCTCCTGCCTCAGCCTCCTGAGTAGCTGGGACTACAGGTGTGCACCACCACACCTGGCTAATTTTTGTATTTTTAGTAGAGACGAGGTTTCACCATGTTGGTCAGGATGGTCAAATGTTAATTTTTAAATGTCCTCCTCAAATAACACATGAACTTTCTTTACAAAGGTAACATACTCAC           T       999        PASS  MantaDEL:245251:6:6:0:0:0  MantaDEL:245251:6:6:0:0:0_bp1         DEL      -542                     0         1    176912            uc001unt.3,uc001unv.3 176912        SKA3
-#>    MantaDEL:245251:5:8:0:0:0_bp2       13  21732061      - |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               G       <DEL>       999        PASS  MantaDEL:245251:5:8:0:0:0  MantaDEL:245251:5:8:0:0:0_bp1         DEL     -2110        <NA>         0         2    176913            uc001unt.3,uc001unv.3 176913        SKA3
-#>    MantaDEL:245251:5:9:0:0:0_bp2       13  21734038      - |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       525        PASS  MantaDEL:245251:5:9:0:0:0  MantaDEL:245251:5:9:0:0:0_bp1         DEL     -1776        <NA>         0         4    176914 uc001unt.3,uc001unu.3,uc001unv.3 176914        SKA3
-#>   MantaDEL:245251:7:10:0:0:0_bp2       13  21735929      - |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T       <DEL>       539        PASS MantaDEL:245251:7:10:0:0:0 MantaDEL:245251:7:10:0:0:0_bp1         DEL     -1802        <NA>         0         1    176915 uc001unt.3,uc001unu.3,uc001unv.3 176915        SKA3
-#>   MantaDEL:245251:4:11:0:0:0_bp2       13  21742127      - |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       999        PASS MantaDEL:245251:4:11:0:0:0 MantaDEL:245251:4:11:0:0:0_bp1         DEL     -6112        <NA>         0         2    176916 uc001unt.3,uc001unu.3,uc001unv.3 176916        SKA3
-#>                              ...      ...       ...    ... .          ...                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ...         ...       ...         ...                        ...                            ...         ...       ...         ...       ...       ...       ...                              ...    ...         ...
-#>    MantaDEL:245251:5:9:0:0:0_bp1       13  21732261      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       525        PASS  MantaDEL:245251:5:9:0:0:0  MantaDEL:245251:5:9:0:0:0_bp2         DEL     -1776        <NA>         0         4    176913 uc001unt.3,uc001unu.3,uc001unv.3 176913        SKA3
-#>   MantaDEL:245251:7:10:0:0:0_bp1       13  21734126      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T       <DEL>       539        PASS MantaDEL:245251:7:10:0:0:0 MantaDEL:245251:7:10:0:0:0_bp2         DEL     -1802        <NA>         0         1    176914 uc001unt.3,uc001unu.3,uc001unv.3 176914        SKA3
-#>   MantaDEL:245251:4:11:0:0:0_bp1       13  21736014      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       999        PASS MantaDEL:245251:4:11:0:0:0 MantaDEL:245251:4:11:0:0:0_bp2         DEL     -6112        <NA>         0         2    176915 uc001unt.3,uc001unu.3,uc001unv.3 176915        SKA3
-#>    MantaDEL:245251:3:4:0:0:0_bp1       13  21742538      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               A       <DEL>       999        PASS  MantaDEL:245251:3:4:0:0:0  MantaDEL:245251:3:4:0:0:0_bp2         DEL     -3939        <NA>         0         2    176916 uc001unt.3,uc001unu.3,uc001unv.3 176916        SKA3
-#>    MantaDEL:245251:2:3:0:0:0_bp1       13  21746642      + |           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               T       <DEL>       999        PASS  MantaDEL:245251:2:3:0:0:0  MantaDEL:245251:2:3:0:0:0_bp2         DEL     -3870        <NA>         0         2    176917 uc001unt.3,uc001unu.3,uc001unv.3 176917        SKA3
+#> GRanges object with 14 ranges and 17 metadata columns:
+#>                                  seqnames    ranges strand | paramRangeID                    REF         ALT      QUAL      FILTER               sourceId                partner      svtype     svLen      insSeq    insLen       event    HOMLEN      exon                              txs  exons gene_symbol
+#>                                     <Rle> <IRanges>  <Rle> |     <factor>            <character> <character> <numeric> <character>            <character>            <character> <character> <numeric> <character> <numeric> <character> <numeric> <integer>                           <list> <list>      <list>
+#>    MantaDEL:245251:6:6:0:0:0_bp2       13  21729832      - |           NA TCTGCAACAGATACAAATAA..           T       999        PASS MantaDEL:245251:6:6:.. MantaDEL:245251:6:6:..         DEL      -542                     0        <NA>         1    176912            uc001unt.3,uc001unv.3 176912        SKA3
+#>    MantaDEL:245251:5:8:0:0:0_bp2       13  21732061      - |           NA                      G       <DEL>       999        PASS MantaDEL:245251:5:8:.. MantaDEL:245251:5:8:..         DEL     -2110        <NA>         0        <NA>         2    176913            uc001unt.3,uc001unv.3 176913        SKA3
+#>    MantaDEL:245251:5:9:0:0:0_bp2       13  21734038      - |           NA                      A       <DEL>       525        PASS MantaDEL:245251:5:9:.. MantaDEL:245251:5:9:..         DEL     -1776        <NA>         0        <NA>         4    176914 uc001unt.3,uc001unu.3,uc001unv.3 176914        SKA3
+#>   MantaDEL:245251:7:10:0:0:0_bp2       13  21735929      - |           NA                      T       <DEL>       539        PASS MantaDEL:245251:7:10.. MantaDEL:245251:7:10..         DEL     -1802        <NA>         0        <NA>         1    176915 uc001unt.3,uc001unu.3,uc001unv.3 176915        SKA3
+#>   MantaDEL:245251:4:11:0:0:0_bp2       13  21742127      - |           NA                      A       <DEL>       999        PASS MantaDEL:245251:4:11.. MantaDEL:245251:4:11..         DEL     -6112        <NA>         0        <NA>         2    176916 uc001unt.3,uc001unu.3,uc001unv.3 176916        SKA3
+#>                              ...      ...       ...    ... .          ...                    ...         ...       ...         ...                    ...                    ...         ...       ...         ...       ...         ...       ...       ...                              ...    ...         ...
+#>    MantaDEL:245251:5:9:0:0:0_bp1       13  21732261      + |           NA                      A       <DEL>       525        PASS MantaDEL:245251:5:9:.. MantaDEL:245251:5:9:..         DEL     -1776        <NA>         0        <NA>         4    176913 uc001unt.3,uc001unu.3,uc001unv.3 176913        SKA3
+#>   MantaDEL:245251:7:10:0:0:0_bp1       13  21734126      + |           NA                      T       <DEL>       539        PASS MantaDEL:245251:7:10.. MantaDEL:245251:7:10..         DEL     -1802        <NA>         0        <NA>         1    176914 uc001unt.3,uc001unu.3,uc001unv.3 176914        SKA3
+#>   MantaDEL:245251:4:11:0:0:0_bp1       13  21736014      + |           NA                      A       <DEL>       999        PASS MantaDEL:245251:4:11.. MantaDEL:245251:4:11..         DEL     -6112        <NA>         0        <NA>         2    176915 uc001unt.3,uc001unu.3,uc001unv.3 176915        SKA3
+#>    MantaDEL:245251:3:4:0:0:0_bp1       13  21742538      + |           NA                      A       <DEL>       999        PASS MantaDEL:245251:3:4:.. MantaDEL:245251:3:4:..         DEL     -3939        <NA>         0        <NA>         2    176916 uc001unt.3,uc001unu.3,uc001unv.3 176916        SKA3
+#>    MantaDEL:245251:2:3:0:0:0_bp1       13  21746642      + |           NA                      T       <DEL>       999        PASS MantaDEL:245251:2:3:.. MantaDEL:245251:2:3:..         DEL     -3870        <NA>         0        <NA>         2    176917 uc001unt.3,uc001unu.3,uc001unv.3 176917        SKA3
 #>   -------
 #>   seqinfo: 25 sequences from an unspecified genome
 #> 
 #> $insSite
-#> GRanges object with 4 ranges and 17 metadata columns:
-#>                                 seqnames    ranges strand | paramRangeID         REF             ALT      QUAL      FILTER                    sourceId                       partner      svtype     svLen      insSeq    insLen    HOMLEN  exons                              txs        rtFound rtFoundSum gene_symbol
-#>                                    <Rle> <IRanges>  <Rle> |     <factor> <character>     <character> <numeric> <character>                 <character>                   <character> <character> <numeric> <character> <numeric> <numeric> <list>                           <list>         <list>  <logical>      <list>
-#>     MantaBND:245251:0:3:0:0:0:0       13  21746762      + |           NA           T T[11:108585702[        49        PASS MantaBND:245251:0:3:0:0:0:0   MantaBND:245251:0:3:0:0:0:1         BND        NA                     0         0 176918            uc001unt.3,uc001unu.3      TRUE,TRUE       TRUE        SKA3
-#>   MantaDEL:245251:5:6:0:0:0_bp2       13  21731995      - |           NA           T           <DEL>       283        PASS   MantaDEL:245251:5:6:0:0:0 MantaDEL:245251:5:6:0:0:0_bp1         DEL     -2734        <NA>         0         0 176911 uc001unt.3,uc001unu.3,uc001unv.3 TRUE,TRUE,TRUE       TRUE        SKA3
-#>     MantaBND:245251:0:3:0:0:0:1       11 108585702      - |           NA           T  ]13:21746762]T        49        PASS MantaBND:245251:0:3:0:0:0:1   MantaBND:245251:0:3:0:0:0:0         BND        NA                     0         0     NA                               NA             NA       <NA>          NA
-#>   MantaDEL:245251:5:6:0:0:0_bp1       13  21729260      + |           NA           T           <DEL>       283        PASS   MantaDEL:245251:5:6:0:0:0 MantaDEL:245251:5:6:0:0:0_bp2         DEL     -2734        <NA>         0         0     NA                               NA             NA       <NA>          NA
+#> GRanges object with 4 ranges and 18 metadata columns:
+#>                                 seqnames    ranges strand | paramRangeID         REF             ALT      QUAL      FILTER               sourceId                partner      svtype     svLen      insSeq    insLen       event    HOMLEN  exons                              txs        rtFound rtFoundSum gene_symbol
+#>                                    <Rle> <IRanges>  <Rle> |     <factor> <character>     <character> <numeric> <character>            <character>            <character> <character> <numeric> <character> <numeric> <character> <numeric> <list>                           <list>         <list>  <logical>      <list>
+#>     MantaBND:245251:0:3:0:0:0:0       13  21746762      + |           NA           T T[11:108585702[        49        PASS MantaBND:245251:0:3:.. MantaBND:245251:0:3:..         BND        NA                     0        <NA>         0 176918            uc001unt.3,uc001unu.3      TRUE,TRUE       TRUE        SKA3
+#>   MantaDEL:245251:5:6:0:0:0_bp2       13  21731995      - |           NA           T           <DEL>       283        PASS MantaDEL:245251:5:6:.. MantaDEL:245251:5:6:..         DEL     -2734        <NA>         0        <NA>         0 176911 uc001unt.3,uc001unu.3,uc001unv.3 TRUE,TRUE,TRUE       TRUE        SKA3
+#>     MantaBND:245251:0:3:0:0:0:1       11 108585702      - |           NA           T  ]13:21746762]T        49        PASS MantaBND:245251:0:3:.. MantaBND:245251:0:3:..         BND        NA                     0        <NA>         0   <NA>                             <NA>           <NA>       <NA>        <NA>
+#>   MantaDEL:245251:5:6:0:0:0_bp1       13  21729260      + |           NA           T           <DEL>       283        PASS MantaDEL:245251:5:6:.. MantaDEL:245251:5:6:..         DEL     -2734        <NA>         0        <NA>         0   <NA>                             <NA>           <NA>       <NA>        <NA>
 #>   -------
 #>   seqinfo: 25 sequences from an unspecified genome
 ```
