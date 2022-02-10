@@ -17,7 +17,7 @@ annotate_rt_gr <- function(exons, hits.tx, gr){
     rt.gr<- c(gr[hits.tx$queryHits], partner(gr)[hits.tx$queryHits])
     rt.gr$exon <- c(exon_id1, exon_id2)
     #annoatate with tx names
-    txs <- mapply(intersect, tx_name1, tx_name2)
+    txs <- mapply(intersect, tx_name1, tx_name2, SIMPLIFY = F)
     rt.gr$txs <- c(IRanges::CharacterList(txs), IRanges::CharacterList(txs))
     #remove bps without tx names
     rt.gr <- rt.gr[!vapply(rt.gr$txs, rlang::is_empty, logical(1))]
@@ -73,7 +73,7 @@ filterByScore_rt_gr <- function(rt.gr, tx.rank, genes, minscore){
                         rt.gr$txs, 
                         mapply(stringr::str_detect, 
                                rt.gr$txs, 
-                               paste(tx.rank$tx_name, collapse = "|")))
+                               paste(tx.rank$tx_name, collapse = "|"), SIMPLIFY = F), SIMPLIFY = F)
     return(rt.gr)
 }
 

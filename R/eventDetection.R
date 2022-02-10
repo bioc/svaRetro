@@ -69,12 +69,16 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     }else{
         # 3.filter exon-exon junctions by minscore(>=2 exons)
         rt.gr <- annotate_rt_gr(exons, hits.tx, gr)
-        rt.gr <- filterByExon_rt_gr(rt.gr)
-        tx.rank <- .scoreByTranscripts(genes, unlist(rt.gr$txs)) 
-        #dataframe of valid retro transcripts
-        tx.rank <- tx.rank[tx.rank$score >= minscore,]
-        rt.gr <- filterByScore_rt_gr(rt.gr, tx.rank, genes, minscore)
- 
+        if (!isEmpty(rt.gr)) {
+          rt.gr <- filterByExon_rt_gr(rt.gr)
+          if(!isEmpty(rt.gr)){
+            tx.rank <- .scoreByTranscripts(genes, unlist(rt.gr$txs)) 
+            #dataframe of valid retro transcripts
+            tx.rank <- tx.rank[tx.rank$score >= minscore,]
+            rt.gr <- filterByScore_rt_gr(rt.gr, tx.rank, genes, minscore)
+          }
+          
+        }
         # 4.filter insertion site junctions, reduce duplications
         #junctions with only one side overlapping with exons:
         idx <- dplyr::bind_rows(dplyr::anti_join(dplyr::as_tibble(hits.start),
@@ -117,16 +121,22 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
             l_gene_symbol)
 
         #group inssite and rt as one GRangesList
-        gr.list <- S4Vectors::pc(rt.grlist, insSite.grlist)
-        gr.list <- lapply(gr.list, 
-                          function(x) stats::setNames(x, 
-                                                      c('junctions', 
-                                                        'insSite')))
-
-        #TODO: add L1/Alu annotation for insertion site filtering.
-        #TODO: single exon tx awareness in filtering
-        return(gr.list)
-        
+        #error here! Error in split.default(ans_unlisted, f) : first argument must be a vector
+        if(length(rt.grlist)==0 & length(insSite.grlist)==0){
+          message("There is no retroposed gene detected.")
+          return(GRanges())
+        }else{
+          gr.list <- S4Vectors::pc(rt.grlist, insSite.grlist) #sfrc01068, sfrc01120, sfrc01130
+          
+          gr.list <- lapply(gr.list, 
+                            function(x) stats::setNames(x, 
+                                                        c('junctions', 
+                                                          'insSite')))
+          
+          #TODO: add L1/Alu annotation for insertion site filtering.
+          #TODO: single exon tx awareness in filtering
+          return(gr.list)
+        }
     }
 }
 

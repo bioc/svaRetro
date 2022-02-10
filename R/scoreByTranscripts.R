@@ -11,7 +11,7 @@
 #' @return A dataframe with two columns, tx_name and score. 
 .scoreByTranscripts <- function(genes, transcripts.col){
     overlapIntron.df <- as.data.frame(table(transcripts.col)/2)
-    colnames(overlapIntron.df) <- c("tx_name", "count")
+    colnames(overlapIntron.df) <- c("tx_name", "count") #"sfrc01139" error here!
     overlapIntron.df <- merge(overlapIntron.df, 
                               mcols(GenomicFeatures::transcripts(
                                   genes, columns=c("tx_name","exon_rank"), 
