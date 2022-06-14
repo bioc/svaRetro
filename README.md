@@ -26,7 +26,7 @@ corresponding packages with `browseVignettes("VariantAnnotation")` and
 # Installation
 
 [svaNUMT](https://doi.org/doi:10.18129/B9.bioc.svaRetro) is currently
-available for download in Bioconductor:
+available for download in Bioconductor (since BioC 3.14 & R 4.1):
 
 ``` r
 # install.packages("BiocManager")
