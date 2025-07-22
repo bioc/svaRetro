@@ -1,8 +1,8 @@
 Package: svaRetro
 Type: Package
 Title: Retrotransposed transcript detection from structural variants
-Version: 1.15.0
-Date: 2022-02-10
+Version: 1.15.1
+Date: 2025-07-22
 Authors@R: 
     c(person(given = "Ruining",
              family = "Dong",
@@ -29,9 +29,10 @@ Imports:
     dplyr,
     methods,
     rlang,
-    GenomicFeatures,
-    GenomeInfoDb,
     S4Vectors,
+    Seqinfo,
+    GenomeInfoDb,
+    GenomicFeatures,
     utils
 Suggests:
     TxDb.Hsapiens.UCSC.hg19.knownGene,

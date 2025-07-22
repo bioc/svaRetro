@@ -14,9 +14,10 @@
 #' @import StructuralVariantAnnotation
 #' @import rtracklayer
 #' @import Biostrings
-#' @import GenomicRanges
-#' @import GenomeInfoDb
 #' @import S4Vectors
+#' @import Seqinfo
+#' @import GenomeInfoDb
+#' @import GenomicRanges
 #' @importFrom dplyr %>%
 #' @importFrom methods as is setMethod setGeneric
 #' @importFrom rlang .data

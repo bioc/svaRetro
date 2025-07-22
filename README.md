@@ -216,7 +216,7 @@ To generate a simple circos plot of RT event with SKA3 transcript:
 ``` r
 library(circlize)
 rt_chr_prefix <- c(RT$SKA3$junctions, RT$SKA3$insSite)
-seqlevelsStyle(rt_chr_prefix) <- "UCSC"
+GenomeInfoDb::seqlevelsStyle(rt_chr_prefix) <- "UCSC"
 pairs <- breakpointgr2pairs(rt_chr_prefix)
 pairs
 ```
