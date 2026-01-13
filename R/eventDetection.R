@@ -38,7 +38,12 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     #prepare annotation exons
     GenomeInfoDb::seqlevelsStyle(genes) <- GenomeInfoDb::seqlevelsStyle(gr)[1]
     exons <- exons(genes, columns=c("exon_id", "tx_id", "tx_name","gene_id"))
-    
+
+    # Re-assign seqinfo from gr to exons for shared chromosomes to avoid mismatch
+    # (e.g. hg19 MT length differences between UCSC and rCRS)
+    common_seqs <- intersect(GenomeInfoDb::seqlevels(gr), GenomeInfoDb::seqlevels(exons))
+    GenomeInfoDb::seqinfo(exons, pruning.mode="coarse") <- GenomeInfoDb::seqinfo(gr)[common_seqs]
+
     #find exon-SV overlaps:
     hits.start <- findOverlaps(gr, exons, maxgap = maxgap, type = "start", 
                                ignore.strand = TRUE)
