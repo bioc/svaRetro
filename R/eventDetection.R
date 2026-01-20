@@ -42,7 +42,9 @@ rtDetect <- function(gr, genes, maxgap=100, minscore=0.4){
     # Re-assign seqinfo from gr to exons for shared chromosomes to avoid mismatch
     # (e.g. hg19 MT length differences between UCSC and rCRS)
     common_seqs <- intersect(GenomeInfoDb::seqlevels(gr), GenomeInfoDb::seqlevels(exons))
-    GenomeInfoDb::seqinfo(exons, pruning.mode="coarse") <- GenomeInfoDb::seqinfo(gr)[common_seqs]
+    new_si <- GenomeInfoDb::seqinfo(exons)
+    GenomeInfoDb::seqlengths(new_si)[common_seqs] <- GenomeInfoDb::seqlengths(gr)[common_seqs]
+    GenomeInfoDb::seqinfo(exons) <- new_si
 
     #find exon-SV overlaps:
     hits.start <- findOverlaps(gr, exons, maxgap = maxgap, type = "start", 
