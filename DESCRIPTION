@@ -1,8 +1,8 @@
 Package: svaRetro
 Type: Package
 Title: Retrotransposed transcript detection from structural variants
-Version: 1.16.4
-Date: 2026-02-03
+Version: 1.16.5
+Date: 2026-02-10
 Authors@R: 
     c(person(given = "Ruining",
              family = "Dong",
