@@ -65,8 +65,8 @@ rtDetect <- function(gr, genes, maxgap = 100, minscore = 0.4) {
   )
 
   # 1.return breakpoints overlapping with exons on both ends (>=2 exons)
-  hits <- dplyr::inner_join(dplyr::as_tibble(hits.start),
-    dplyr::as_tibble(hits.end),
+  hits <- dplyr::inner_join(as.data.frame(hits.start),
+    as.data.frame(hits.end),
     by = "queryHits"
   )
   same.tx <- vapply(
@@ -83,12 +83,12 @@ rtDetect <- function(gr, genes, maxgap = 100, minscore = 0.4) {
 
   # 2.return breakpoints of insertionSite-exon
   hits.insSite <- hits[!same.tx, ] %>%
-    dplyr::bind_rows(dplyr::anti_join(dplyr::as_tibble(hits.start),
-      dplyr::as_tibble(hits.end),
+    dplyr::bind_rows(dplyr::anti_join(as.data.frame(hits.start),
+      as.data.frame(hits.end),
       by = "queryHits"
     )) %>%
-    dplyr::bind_rows(dplyr::anti_join(dplyr::as_tibble(hits.end),
-      dplyr::as_tibble(hits.start),
+    dplyr::bind_rows(dplyr::anti_join(as.data.frame(hits.end),
+      as.data.frame(hits.start),
       by = "queryHits"
     ))
 
@@ -110,12 +110,12 @@ rtDetect <- function(gr, genes, maxgap = 100, minscore = 0.4) {
     # 4.filter insertion site junctions, reduce duplications
     # junctions with only one side overlapping with exons:
     idx <- dplyr::bind_rows(
-      dplyr::anti_join(dplyr::as_tibble(hits.start),
-        dplyr::as_tibble(hits.end),
+      dplyr::anti_join(as.data.frame(hits.start),
+        as.data.frame(hits.end),
         by = "queryHits"
       ),
-      dplyr::anti_join(dplyr::as_tibble(hits.end),
-        dplyr::as_tibble(hits.start),
+      dplyr::anti_join(as.data.frame(hits.end),
+        as.data.frame(hits.start),
         by = "queryHits"
       )
     )
