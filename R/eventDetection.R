@@ -124,8 +124,8 @@ rtDetect <- function(gr, genes, maxgap = 100, minscore = 0.4) {
 
     # 5.create one GrangesList per gene
     # get all genes detected
-    rt.gr$gene_symbol <- .txs2genesym(rt.gr$txs)
-    insSite.gr$gene_symbol <- .txs2genesym(insSite.gr$txs)
+    rt.gr$gene_symbol <- .txs2genesym(rt.gr$txs, genes)
+    insSite.gr$gene_symbol <- .txs2genesym(insSite.gr$txs, genes)
     # unlisted gene_symbols are factors which are converted to numbers
     # if not converted to characters prior to unique()
     l_gene_symbol <- unique(c(

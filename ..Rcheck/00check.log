@@ -1,0 +1,14 @@
+* using log directory ‘/Users/ruining/Library/CloudStorage/OneDrive-TheUniversityofMelbourne/Documents/svaRetro/..Rcheck’
+* using R version 4.3.1 (2023-06-16)
+* using platform: x86_64-apple-darwin20 (64-bit)
+* R was compiled by
+    Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+    GNU Fortran (GCC) 12.2.0
+* running under: macOS 26.2
+* using session charset: UTF-8
+* using options ‘--no-manual --no-vignettes’
+* checking for file ‘./DESCRIPTION’ ... ERROR
+Required fields missing or empty:
+  ‘Author’ ‘Maintainer’
+* DONE
+Status: 1 ERROR
