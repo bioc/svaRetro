@@ -86,20 +86,12 @@ an exon boundary and a second genomic location are reported as potential
 insertion sites. Due to the complexity of RT events, insertion sites can be 
 discovered on both left and right sides, only one side, or none at all.
 
-```{r, include=TRUE,results="markup",message=TRUE,warning=TRUE}
+```{r, include=TRUE,results="hide",message=FALSE,warning=FALSE}
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library(dplyr)
 hg19.genes <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
 RT <- rtDetect(RT_gr, hg19.genes, maxgap = 10, minscore = 0.8)
-# Diagnostics: show the structure of RT for debugging
-message("RT class: ", paste(class(RT), collapse = ", "))
-message("RT is.list: ", is.list(RT))
-if (is.list(RT)) {
-  message("RT names: ", paste(names(RT), collapse = ", "))
-} else {
-  message("RT length: ", length(RT))
-}
 ```
 
 The output is a list of `GRanges` object consisting of two sets of `GRanges` 
@@ -124,22 +116,9 @@ To generate a simple circos plot of RT event with SKA3 transcript:
 ```{r, include=TRUE,results="hide",message=FALSE,warning=FALSE}
 library(circlize)
 rt_chr_prefix <- c(RT$SKA3$junctions, RT$SKA3$insSite)
-if (!is.null(rt_chr_prefix) && length(rt_chr_prefix) > 0) {
-  GenomeInfoDb::seqlevelsStyle(rt_chr_prefix) <- "UCSC"
-  pairs <- breakpointgr2pairs(rt_chr_prefix)
-  pairs
-} else {
-  stop(
-    "RT$SKA3 is NULL - rtDetect did not find SKA3. ",
-    "RT class: ", paste(class(RT), collapse = ", "), "; ",
-    "is.list: ", is.list(RT), "; ",
-    if (is.list(RT)) {
-      paste("names:", paste(names(RT), collapse = ", "))
-    } else {
-      paste("length:", length(RT))
-    }
-  )
-}
+GenomeInfoDb::seqlevelsStyle(rt_chr_prefix) <- "UCSC"
+pairs <- breakpointgr2pairs(rt_chr_prefix)
+pairs
 ```
 To see supporting breakpoints clearly, we generate the circos plot according 
 to the loci of event.
